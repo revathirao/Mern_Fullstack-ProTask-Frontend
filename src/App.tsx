@@ -8,6 +8,29 @@ function App() {
       <div>
          <h1>Pro-Tasker</h1>
          <p>Frontend initialized successfully</p>
+
+         <Routes>
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+
+            <Route
+               path="/dashboard"
+               element={
+                  <ProtectedRoute>
+                     <Dashboard />
+                  </ProtectedRoute>
+               }
+            />
+
+            <Route
+               path="/projects/:id"
+               element={
+                  <ProtectedRoute>
+                     <ProjectDetails />
+                  </ProtectedRoute>
+               }
+            />
+         </Routes>
       </div>
    );
 }

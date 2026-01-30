@@ -74,3 +74,4 @@ Status: [ To Do ▾ ]
 [ Task Title ] Done Edit | Delete
 
 ---
+“AuthContext centralizes authentication logic, persists login state using localStorage, and automatically injects JWT tokens into Axios requests using a side-effect.”
