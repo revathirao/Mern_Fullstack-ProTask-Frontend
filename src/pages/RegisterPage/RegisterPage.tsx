@@ -5,8 +5,7 @@ import ErrorMessage from "../../components/SharedComponents/ErrorHandler/ErrorHa
 import type { RegisterCredentials } from "../../types";
 import { AuthContext } from "../../context/authContext";
 import { useNavigate, Link } from "react-router-dom";
-
-import "./Register.css";
+import "./RegisterPage.css";
 /**
  * Register Page
  ** Allows a new user to create an account.
