@@ -1,5 +1,7 @@
 // import { useState } from "react";
-// import { Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
+import Login from "../src/pages/LoginPage/LoginPage";
+import Dashboard from "../src/pages/DashboardPage/DashboardPage";
 
 import "./App.css";
 
@@ -9,7 +11,7 @@ function App() {
          <h1>Pro-Tasker</h1>
          <p>Frontend initialized successfully</p>
 
-         <Routes>
+         {/* <Routes>
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
 
@@ -30,6 +32,11 @@ function App() {
                   </ProtectedRoute>
                }
             />
+         </Routes> */}
+
+         <Routes>
+            <Route path="/login" element={<Login />} />
+            <Route path="/dashboard" element={<Dashboard />} />
          </Routes>
       </div>
    );

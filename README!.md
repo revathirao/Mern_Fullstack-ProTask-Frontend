@@ -74,4 +74,29 @@ Status: [ To Do ▾ ]
 [ Task Title ] Done Edit | Delete
 
 ---
+
 “AuthContext centralizes authentication logic, persists login state using localStorage, and automatically injects JWT tokens into Axios requests using a side-effect.”
+
+“The Login page uses AuthContext to call the backend login API. On success, the JWT token and user info are stored in context and localStorage, and Axios automatically includes the token in all requests. This keeps the user logged in across page refreshes.”s
+
+Summary of Login Flow
+
+User types email & password.
+
+User clicks Login → handleSubmit triggers.
+
+login(email, password) is called from AuthContext.
+
+Backend validates credentials → returns user + token.
+
+User info and JWT token are saved in:
+
+React context (user, token)
+
+localStorage (persist across refresh)
+
+Axios default headers updated → all future requests authenticated
+
+User is redirected to dashboard.
+
+Errors displayed if login fails.
