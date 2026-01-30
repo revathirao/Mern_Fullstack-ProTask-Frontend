@@ -19,3 +19,4 @@ export interface RegisterCredentials {
   password: string;
   username?: string;
 }
+
