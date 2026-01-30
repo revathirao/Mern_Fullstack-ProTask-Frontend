@@ -1,5 +1,6 @@
 // import { useState } from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
+
 import Login from "../src/pages/LoginPage/LoginPage";
 import Dashboard from "../src/pages/DashboardPage/DashboardPage";
 
@@ -7,7 +8,7 @@ import "./App.css";
 
 function App() {
    return (
-      <div>
+      <>
          <h1>Pro-Tasker</h1>
          <p>Frontend initialized successfully</p>
 
@@ -35,10 +36,11 @@ function App() {
          </Routes> */}
 
          <Routes>
+            <Route path="/" element={<Navigate to="/login" />} />
             <Route path="/login" element={<Login />} />
             <Route path="/dashboard" element={<Dashboard />} />
          </Routes>
-      </div>
+      </>
    );
 }
 

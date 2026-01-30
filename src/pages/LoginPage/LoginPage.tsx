@@ -1,7 +1,8 @@
 import React, { useState, useContext } from "react"; // React + hooks for state and context
 import { AuthContext } from "../../context/authContext"; // Import AuthContext to access login()
 import { useNavigate } from "react-router-dom"; // Hook for redirecting after loginconst { login } = useContext(AuthContext);
-
+import { Link } from "react-router-dom";
+import "./LoginPage.css";
 /**
  * Login Component
  * Displays a login form that allows users to log in using their email and password.
@@ -94,6 +95,16 @@ export default function Login() {
 
             {/* Submit button */}
             <button type="submit">Login</button>
+
+            {/* Link to registration page */}
+            <p style={{ marginTop: "10px" }}>
+               Don’t have an account?{" "}
+               <Link
+                  to="/register"
+                  style={{ color: "blue", textDecoration: "underline" }}>
+                  Register here
+               </Link>
+            </p>
          </form>
       </div>
    );
