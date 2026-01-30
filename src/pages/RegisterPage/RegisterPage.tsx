@@ -4,7 +4,9 @@ import Spinner from "../../components/SharedComponents/Spinner/Spinner";
 import ErrorMessage from "../../components/SharedComponents/ErrorHandler/ErrorHandler";
 import type { RegisterCredentials } from "../../types";
 import { AuthContext } from "../../context/authContext";
+import { useNavigate, Link } from "react-router-dom";
 
+import "./Register.css";
 /**
  * Register Page
  ** Allows a new user to create an account.
@@ -29,6 +31,9 @@ export default function Register(): JSX.Element {
 
    // Destructure form data for easier access
    const { email, password, username } = formData;
+
+   // Get the navigation function from React Router for programmatic navigation
+   const navigate = useNavigate();
 
    /**
     * Handles input field changes
@@ -69,6 +74,8 @@ export default function Register(): JSX.Element {
          // Call register from AuthContext
          await register({ email, password, username });
          alert("Registration successful! Please log in.");
+         // Navigate to login page
+         navigate("/login");
       } catch (err: any) {
          // Handle backend vs fallback errors (same as Login)
          if (err.response && err.response.data?.message) {
@@ -88,7 +95,7 @@ export default function Register(): JSX.Element {
 
          {/* Render error message */}
          {error && <ErrorMessage message={error} />}
-         
+
          <form onSubmit={handleSubmit}>
             <input
                type="text"
@@ -120,6 +127,10 @@ export default function Register(): JSX.Element {
             <button type="submit" disabled={isLoading}>
                {isLoading ? "Registering..." : "Register"}
             </button>
+
+            <div className="login-link">
+               Already have an account? <Link to="/login">Login</Link>{" "}
+            </div>
          </form>
 
          {/* Spinner component is clearly and separately rendered */}
