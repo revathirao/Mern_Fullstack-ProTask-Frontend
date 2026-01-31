@@ -1,4 +1,6 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
+import axios from "axios";
+import { AuthContext } from "../../../context/authContext";
 import "./ProjectForm.css";
 
 /* 
@@ -9,18 +11,46 @@ export default function ProjectForm() {
    // Local state for form fields
    const [name, setName] = useState("");
    const [description, setDescription] = useState("");
+   const { token } = useContext(AuthContext);
 
    // Handle form submit
-   function handleSubmit(e: React.FormEvent) {
+   async function handleSubmit(e: React.FormEvent) {
       e.preventDefault(); // Prevent default page reload
-      console.log({
-         name,
-         description,
-      });
+      try {
+         // Make sure token exists
 
-      // Clear form after submit
-      setName("");
-      setDescription("");
+         if (!token) return; // <-- use token directly
+
+         /* 
+       Axios POST request to backend
+       - URL: your backend endpoint
+       - body: project data (name + description)
+       - headers: Authorization with JWT token
+     */
+         const res = await axios.post(
+            `${import.meta.env.VITE_API_URL}/api/projects`,
+            { name, description }, // request body
+            {
+               headers: {
+                  Authorization: `Bearer ${token}`, // send JWT
+               },
+            },
+         );
+
+         // Log response from backend
+         console.log("Project created:", res.data);
+
+         // Clear form fields
+         setName("");
+         setDescription("");
+      } catch (err: any) {
+         // Axios errors have response object
+         if (err.response) {
+            console.error("Error creating project:", err.response.data.message);
+         } else {
+            console.error("Something went wrong:", err.message);
+         }
+      }
    }
 
    // JSX for Project form
