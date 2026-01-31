@@ -1,3 +1,5 @@
+import "./projects.css";
+
 /**Projects Page Component
 Purpose:
 - Displays all projects created by the logged-in user

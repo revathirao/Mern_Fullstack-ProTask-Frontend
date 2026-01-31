@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { AuthContext } from "../../context/authContext";
 import { useNavigate } from "react-router-dom";
-import React from "react";
+// import React from "react";
 import "./DashboardPage.css";
 /**
  * Dashboard Component
