@@ -1,44 +1,50 @@
-/* Full-screen container with background image */
-.dashboard-container {
-   height: 100vh;
-   display: flex;
-   justify-content: center;
-   align-items: center;
-   background-image: url("https://images.unsplash.com/photo-1581091870620-69e9abff91ef?auto=format&fit=crop&w=1470&q=80");
-   background-size: cover;
-   background-position: center;
+/* Ensure html and body take full height */
+html,
+body,
+#root {
+   height: 100%;
+   width: 100%;
+   margin: 0;
+   padding: 0;
+   /* overflow: hidden; Prevent horizontal scrolling */
+   font-family: Arial, sans-serif;
 }
 
-/* Centered card */
-.dashboard-card {
-   background-color: rgba(255, 255, 255, 0.9);
-   padding: 3rem;
-   border-radius: 15px;
-   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+/* Full-page container with background image */
+.dashboard-container {
+   height: 100vh; /* Full viewport height */
+   width: 100vw; /* Make container full viewport width */
+   display: flex;
+   flex-direction: column; /* Stack message and button vertically */
+   justify-content: center; /* Center vertically */
+   align-items: center; /* Center horizontally */
+   background: url("https://picsum.photos/1920/1080?blur=3") no-repeat center
+      center;
+   background-size: cover; /* Cover entire page */
+   color: #fff; /* White text for visibility */
    text-align: center;
-   min-width: 300px;
+   padding: 1rem;
 }
 
 /* Welcome message */
-.dashboard-card h1 {
-   margin-bottom: 1rem;
-   color: #333;
+.dashboard-container h1 {
+   font-size: 3rem;
+   margin-bottom: 2rem;
+   text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7); /* Makes text readable on image */
 }
 
 /* Logout button */
-.dashboard-card button {
-   margin-top: 1.5rem;
-   padding: 0.8rem 2rem;
-   background-color: #007bff;
+.dashboard-container button {
+   padding: 1rem 2rem;
+   background-color: rgba(0, 123, 255, 0.8);
    color: white;
    border: none;
-   border-radius: 8px;
+   border-radius: 10px;
    cursor: pointer;
-   font-size: 1rem;
+   font-size: 1.2rem;
    transition: all 0.3s ease;
 }
 
-/* Hover effect for logout button */
-.dashboard-card button:hover {
-   background-color: #0056b3;
+.dashboard-container button:hover {
+   background-color: rgba(0, 86, 179, 0.9);
 }

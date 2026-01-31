@@ -100,3 +100,4 @@ Axios default headers updated → all future requests authenticated
 User is redirected to dashboard.
 
 Errors displayed if login fails.
+https://picsum.photos for images
