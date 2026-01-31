@@ -7,6 +7,14 @@
    gap: 1rem;
    margin-top: 2rem;
 }
+/* Error message */
+.error {
+   color: #dc2626;
+   font-size: 0.85rem;
+   background: #fee2e2;
+   padding: 8px 12px;
+   border-radius: 8px;
+}
 
 /* Text input & textarea */
 .project-form input,
@@ -25,7 +33,7 @@
    border-color: #2563eb;
 }
 
-/* Submit button */
+/* Submit & Cancel buttons */
 .project-form button {
    align-self: flex-start;
    padding: 12px 28px;
@@ -39,8 +47,25 @@
    transition: all 0.3s ease;
 }
 
+/* Disabled state (loading) */
+.project-form button:disabled {
+   background-color: #9ca3af;
+   cursor: not-allowed;
+   transform: none;
+}
+
 /* Hover */
 .project-form button:hover {
    background-color: #1d4ed8;
    transform: translateY(-2px);
+}
+
+/* Cancel button override */
+.project-form button[type="button"] {
+   background-color: #e5e7eb;
+   color: #111827;
+}
+
+.project-form button[type="button"]:hover {
+   background-color: #d1d5db;
 }

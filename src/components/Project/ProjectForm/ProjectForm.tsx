@@ -1,5 +1,7 @@
 import { useContext, useState } from "react";
 import axios from "axios";
+import Spinner from "../../SharedComponents/Spinner/Spinner";
+import ErrorMessage from "../../SharedComponents/ErrorHandler/ErrorHandler";
 import { AuthContext } from "../../../context/authContext";
 import type { ProjectFormProps } from "../../../types/index";
 import "./ProjectForm.css";
@@ -20,15 +22,33 @@ export default function ProjectForm({
    const [name, setName] = useState("");
    const [description, setDescription] = useState("");
 
+   // State to store error messages
+   const [error, setError] = useState("");
+
+   // Track loading state to control Spinner visibility
+   const [isLoading, setIsLoading] = useState<boolean>(false);
+
    // Get token from AuthContext
    const { token } = useContext(AuthContext);
 
    // Handle form submit
    async function handleSubmit(e: React.FormEvent) {
       e.preventDefault(); // Prevent default page reload
+
+      // Clear any previous error
+      setError("");
+
+      //Inline Validation
+      if (!name.trim()) {
+         setError("Project name is required");
+         return;
+      }
       try {
          // Make sure token exists
-         if (!token) return; // <-- use token directly
+         if (!token) return; //  use token directly
+
+         // Enable spinner before API call
+         setIsLoading(true);
 
          /*
           *Axios POST request to backend
@@ -63,14 +83,19 @@ export default function ProjectForm({
             "Error creating project:",
             err.response?.data?.message || err.message,
          );
+      } finally {
+         setIsLoading(false); //STOP loading
       }
    }
 
    // JSX for Project form
    return (
+      //  Define the form element, attach the submission handler, and apply styling via CSS class
       <form onSubmit={handleSubmit} className="project-form">
+         {/* Header */}
          <h2>Create Project</h2>
-
+         {/* Display an error message if the 'error' state contains a value */}
+         {error && <ErrorMessage message={error} />}
          {/* Project name input */}
          <input
             type="text"
@@ -78,7 +103,6 @@ export default function ProjectForm({
             value={name}
             onChange={(e) => setName(e.target.value)}
          />
-
          {/* Project description input */}
          <textarea
             placeholder="Project Description"
@@ -86,9 +110,17 @@ export default function ProjectForm({
             onChange={(e) => setDescription(e.target.value)}
             rows={4}
          />
-
          {/* Submit button */}
-         <button type="submit">Create Project</button>
+         <button type="submit" disabled={isLoading}>
+            {isLoading ? (
+               <>
+                  Loading...
+                  <Spinner />
+               </>
+            ) : (
+               "Create Project"
+            )}
+         </button>{" "}
          {/* Cancel button uses onClose from parent */}
          <button type="button" onClick={onClose}>
             Cancel

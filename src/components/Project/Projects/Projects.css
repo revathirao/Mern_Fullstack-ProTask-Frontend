@@ -1,9 +1,10 @@
-.projects-pagecontaine {
+.projects-pagecontainer {
    width: 100vw;
    min-height: 100vh;
    padding: 40px 60px;
    background: linear-gradient(135deg, #f9fafb, #eef2f7);
    overflow-x: hidden;
+   box-sizing: border-box;
 }
 
 /* Header Section */
@@ -23,6 +24,27 @@
 .projects-header p {
    margin-top: 0.25rem;
    color: #6b7280;
+}
+
+.project-items {
+   display: grid;
+   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+   gap: 1.5rem;
+}
+
+.project-card {
+   background: white;
+   padding: 1.5rem;
+   border-radius: 16px;
+   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+   transition:
+      transform 0.25s ease,
+      box-shadow 0.25s ease;
+}
+
+.project-card:hover {
+   transform: translateY(-6px);
+   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
 }
 
 /* Create Project Button */
