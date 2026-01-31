@@ -1,4 +1,3 @@
-
 /**Projects Page Component
 Purpose:
 - Displays all projects created by the logged-in user
@@ -9,12 +8,15 @@ Purpose:
 export default function Projects() {
    return (
       <div className="projects-pagecontainer">
-         {/* Page heading */}
-         <h1> Projects</h1>
-
-         {/* Button placeholder for creating a new project */}
-         <button className="create-project-btn">Create Project</button>
-
+         {/* Header section: title + action */}
+         <div className="projects-header">
+            <div>
+               <h1>Your Projects</h1>
+               <p>Manage all your projects in one place</p>
+            </div>
+            {/* Button placeholder for creating a new project */}
+            <button className="create-project-btn">Create Project</button>
+         </div>
          {/* 
         Project list container
         - This is where all projects will be rendered

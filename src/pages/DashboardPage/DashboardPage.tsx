@@ -21,7 +21,9 @@ export default function Dashboard() {
          {/* Welcome message for the user */}
          <h1>Welcome, {user?.username || user?.email}!</h1>
          {/* Navigate to Projects page */}
-         <button onClick={() => navigate("/projects")}>Go to Projects</button>
+         <button className="projects-btn" onClick={() => navigate("/projects")}>
+            Go to Projects
+         </button>
          {/* Logout button */}
          <button onClick={logout}>Logout</button>{" "}
          {/* Calls logout function from AuthContext Logout */}

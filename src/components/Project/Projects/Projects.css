@@ -1,0 +1,61 @@
+.projects-pagecontaine {
+   width: 100vw;
+   min-height: 100vh;
+   padding: 40px 60px;
+   background: linear-gradient(135deg, #f9fafb, #eef2f7);
+   overflow-x: hidden;
+}
+
+/* Header Section */
+
+.projects-header {
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+   margin-bottom: 2.5rem;
+}
+
+.projects-header h1 {
+   font-size: 2.3rem;
+   color: #111827;
+}
+
+.projects-header p {
+   margin-top: 0.25rem;
+   color: #6b7280;
+}
+
+/* Create Project Button */
+
+.create-project-btn {
+   padding: 12px 28px;
+   font-size: 0.95rem;
+   font-weight: 600;
+   border: none;
+   border-radius: 999px;
+   background-color: #2563eb;
+   color: white;
+   cursor: pointer;
+   transition: all 0.3s ease;
+}
+
+.create-project-btn:hover {
+   background-color: #1d4ed8;
+   transform: translateY(-2px);
+}
+
+/*  Projects List Placeholder Area */
+
+.projects-list {
+   width: 100%;
+   margin-top: 1rem;
+}
+
+/* Empty state (no projects yet) */
+
+.no-projects {
+   margin-top: 4rem;
+   text-align: center;
+   color: #6b7280;
+   font-size: 1.05rem;
+}

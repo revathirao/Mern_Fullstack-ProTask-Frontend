@@ -20,6 +20,7 @@ body,
    align-items: center; /* Center horizontally */
    background: url("https://picsum.photos/1920/1080?blur=3") no-repeat center
       center;
+   /* background: linear-gradient(to right, #f7f9fc, #eef2f7); */
    background-size: cover; /* Cover entire page */
    color: #fff; /* White text for visibility */
    text-align: center;
@@ -33,6 +34,32 @@ body,
    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7); /* Makes text readable on image */
 }
 
+/* Subtitle */
+.dashboard p {
+   font-size: 1.1rem;
+   color: #4b5563;
+   margin-bottom: 2rem;
+}
+
+/* Go to Projects button */
+.dashboard .projects-btn {
+   padding: 14px 32px;
+   font-size: 1rem;
+   font-weight: 600;
+   border: none;
+   border-radius: 30px;
+   cursor: pointer;
+   background: #2563eb;
+   color: white;
+   transition: all 0.3s ease;
+}
+
+/* Hover effect */
+.dashboard .projects-btn:hover {
+   background: #1d4ed8;
+   transform: translateY(-2px);
+}
+
 /* Logout button */
 .dashboard-container button {
    padding: 1rem 2rem;
@@ -42,6 +69,7 @@ body,
    border-radius: 10px;
    cursor: pointer;
    font-size: 1.2rem;
+   margin-top: 1rem;
    transition: all 0.3s ease;
 }
 
