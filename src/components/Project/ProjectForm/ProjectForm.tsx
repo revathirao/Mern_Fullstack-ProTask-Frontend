@@ -1,5 +1,6 @@
 import { useState } from "react";
 import "./ProjectForm.css";
+
 /* 
    ProjectForm Component
    Used to create a new project (UI only)
@@ -23,24 +24,26 @@ export default function ProjectForm() {
    }
 
    // JSX for Project form
-   <form onSubmit={handleSubmit} className="project-form">
-      {/* Project name input */}
-      <input
-         type="text"
-         placeholder="Project Name"
-         value={description}
-         onChange={(e) => setName(e.target.value)}
-      />
+   return (
+      <form onSubmit={handleSubmit} className="project-form">
+         {/* Project name input */}
+         <input
+            type="text"
+            placeholder="Project Name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+         />
 
-      {/* Project description input */}
-      <textarea
-         placeholder="Project Description"
-         value={description}
-         onChange={(e) => setDescription(e.target.value)}
-         rows={4}
-      />
+         {/* Project description input */}
+         <textarea
+            placeholder="Project Description"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            rows={4}
+         />
 
-      {/* Submit button */}
-      <button type="submit">Create Project</button>
-   </form>;
+         {/* Submit button */}
+         <button type="submit">Create Project</button>
+      </form>
+   );
 }

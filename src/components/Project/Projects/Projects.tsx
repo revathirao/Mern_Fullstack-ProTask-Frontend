@@ -1,3 +1,6 @@
+import { useState } from "react";
+import ProjectForm from "../../Project/ProjectForm/ProjectForm";
+
 import "./projects.css";
 
 /**Projects Page Component
@@ -8,6 +11,10 @@ Purpose:
 */
 
 export default function Projects() {
+   // Toggle Project Form visibility
+
+   const [showForm, setShowForm] = useState(false);
+
    return (
       <div className="projects-pagecontainer">
          {/* Header section: title + action */}
@@ -17,7 +24,11 @@ export default function Projects() {
                <p>Manage all your projects in one place</p>
             </div>
             {/* Button placeholder for creating a new project */}
-            <button className="create-project-btn">Create Project</button>
+            <button
+               className="create-project-btn"
+               onClick={() => setShowForm(!showForm)}>
+               {showForm ? "Close Form" : "Create Project"}
+            </button>
          </div>
          {/* 
         Project list container
@@ -27,6 +38,7 @@ export default function Projects() {
          <div className="projects-list">
             {/* Temporary placeholder text */}
             <p>No projects yet. Create your first project!</p>
+            {showForm && <ProjectForm />}
          </div>
       </div>
    );
