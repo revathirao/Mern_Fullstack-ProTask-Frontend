@@ -22,6 +22,7 @@ export default function ProjectForm({
    // Local state for form fields
    const [name, setName] = useState("");
    const [description, setDescription] = useState("");
+   const [status, setStatus] = useState("");
 
    // State to store error messages
    const [error, setError] = useState("");
@@ -61,7 +62,7 @@ export default function ProjectForm({
           */
          const res = await axios.post(
             `${import.meta.env.VITE_API_URL}/api/projects`,
-            { name, description }, // request body
+            { name, description, status }, // request body
             {
                headers: {
                   Authorization: `Bearer ${token}`, // send JWT
@@ -86,6 +87,7 @@ export default function ProjectForm({
          // Clear form fields
          setName("");
          setDescription("");
+         setStatus("");
       } catch (err: any) {
          console.error(
             "Error creating project:",
@@ -123,6 +125,11 @@ export default function ProjectForm({
             onChange={(e) => setDescription(e.target.value)}
             rows={4}
          />
+         {/* Project status */}
+         <select value={status} onChange={(e) => setStatus(e.target.value)}>
+            <option value="Active">Active</option>
+            <option value="Completed">Completed</option>
+         </select>
          {/* Submit button */}
          <button type="submit" disabled={isLoading}>
             {isLoading ? (

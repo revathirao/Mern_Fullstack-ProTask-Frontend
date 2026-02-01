@@ -9,6 +9,7 @@ import "./App.css";
 import Header from "./components/SharedComponents/Header/Header.tsx";
 import { AuthContext } from "./context/authContext.tsx";
 import { useContext } from "react";
+import ProjectDetails from "./pages/ProjectDetai/ProjectDetail.tsx";
 
 /*- Dashboard and Projects are protected
 - User must be logged in to access them
@@ -47,12 +48,21 @@ function App() {
                   </ProtectedRoutes>
                }
             />
-
+            {/* 
             <Route
                path="/projects/:id"
                element={
                   <ProtectedRoutes>
                      <Projects />
+                  </ProtectedRoutes>
+               }
+            /> */}
+
+            <Route
+               path="/projects/:id"
+               element={
+                  <ProtectedRoutes>
+                     <ProjectDetails />
                   </ProtectedRoutes>
                }
             />

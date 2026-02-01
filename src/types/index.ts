@@ -30,7 +30,7 @@ export interface ProjectFormProps {
 // Define the shape of a single Project object
 export interface Project {
    _id: string;
-   title: string;
+   name: string;
    description: string;
    status: string;
 }

@@ -258,4 +258,34 @@ Inline validation React forms best practices
 
 Most issues came from state type mismatch, props misalignment, and API response inconsistencies.
 
-Solutions involved safe state handling, TypeScript updates, modal encapsulation, and loading / toast UX improvements.
+Solutions involved safe state handling, TypeScript updates, modal encapsulation, and loading / toast UX improvements.Animation -[W3Schools' Animation Fill Mode.](https://www.w3schools.com/cssref/css3_pr_animation-fill-mode.php)
+
+Project status not showing correctly:
+Initially, the status badge in ProjectCard wasn’t displayed because the span element was commented out.
+Solution: We uncommented and updated it to:
+
+<span className={`status ${project.status?.toLowerCase()}`}>{project.status}</span>
+
+This ensures the status appears with proper styling based on its value.
+
+Edit and Delete buttons interfering with card click:
+Clicking on the buttons sometimes triggered the card’s onClick.
+Solution: We added e.stopPropagation() to the buttons’ container:
+
+<div className="project-actions" onClick={(e) => e.stopPropagation()}>
+
+Now the buttons work independently without firing the card click.
+
+Unable to navigate to project details on card click:
+Clicking the card logged the project ID but didn’t navigate because the onClick prop was replaced with a console log.
+Solution: We restored the prop call to trigger navigation:
+
+onClick={() => onClick(project.\_id)}
+
+And ensured Projects.tsx passes navigate as the callback:
+
+onClick={(id) => navigate(`/projects/${id}`)}
+
+Temporary console logs not removed:
+During debugging, multiple console.log() statements were left in ProjectCard and Projects.tsx.
+Solution: We removed or commented unnecessary logs to clean up the console.

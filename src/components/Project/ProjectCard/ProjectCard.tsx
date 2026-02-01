@@ -19,13 +19,17 @@ export default function ProjectCard({
    return (
       // Main container: clicking anywhere triggers the onClick handler with the project ID
       <div
-         className="projectCard" // Applies CSS classes for styling and entry animation
+         className="project-card fade-in" // Applies CSS classes for styling and entry animation
          onClick={() => onClick(project._id)}>
+         {/* // onClick={() => console.log("CARD CLICKED", project._id)}> */}
          {/* Project Info */}
          <div className="project-content">
-            <h3>{project.title}</h3>
+            <h3>{project.name}</h3>
             <p>{project.description}</p>
-            <span className="status">{project.status}</span>
+            {/* <span className="status">{project.status}</span> */}
+            <span className={`status ${project.status?.toLowerCase()}`}>
+               {project.status}
+            </span>
             {/* Displays the current status */}
          </div>
 

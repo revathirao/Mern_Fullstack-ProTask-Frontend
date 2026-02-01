@@ -1,9 +1,11 @@
 import { useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { AuthContext } from "../../../context/authContext";
 import ProjectForm from "../../Project/ProjectForm/ProjectForm";
 import "./projects.css";
 import Modal from "../../SharedComponents/Modal/Modal";
+import ProjectCard from "../ProjectCard/ProjectCard"
 
 /**Projects Page Component
 Purpose:
@@ -15,9 +17,12 @@ Purpose:
 export default function Projects() {
    const [projects, setProjects] = useState<any[]>([]); // stores fetched projects
    const { token } = useContext(AuthContext);
+   const navigate = useNavigate();
 
    // Toggle Project Form visibility
    const [showForm, setShowForm] = useState(false);
+
+   const [editProject, setEditProject] = useState<any>(null);
 
    // Define an asynchronous function to handle the API request and fetch projects from backend
    async function fetchProjects() {
@@ -89,6 +94,10 @@ export default function Projects() {
       });
    };
 
+   function deleteProject(id: string) {
+      console.log("Delete project:", id);
+   }
+
    return (
       <div className="projects-pagecontainer">
          <h1>Test Projects Page</h1>
@@ -146,10 +155,18 @@ export default function Projects() {
                   {/* Display fetched projects */}
                   {Array.isArray(projects) &&
                      projects.map((project) => (
-                        <div key={project._id} className="project-card">
-                           <h3>{project.name}</h3>
-                           <p>{project.description}</p>
-                        </div>
+                        //    <div key={project._id} className="project-card">
+                        //       <h3>{project.name}</h3>
+                        //       <p>{project.description}</p>
+                        //    </div>
+                        // ))
+                        <ProjectCard
+                           key={project._id}
+                           project={project}
+                           onClick={(id) => navigate(`/projects/${id}`)}
+                           onEdit={(project) => setEditProject(project)}
+                           onDelete={(id) => deleteProject(id)}
+                        />
                      ))}
                </div>
             )}

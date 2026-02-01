@@ -1,3 +1,37 @@
+/**
+ * .fade-in: Smooth entrance effect for project cards.
+ * Uses 'forwards' to ensure the card stays visible (opacity: 1) after 
+ * the animation completes, rather than disappearing.
+ * fadeUp /* name: the @keyframes to use 
+ * 0.4s - duration: how long the animation takes 
+ * ease - timing: starts slow, speeds up, then ends slow 
+ * forwards- fill-mode: stay at the final frame (don't reset)
+ * Reference:https://www.w3schools.com/cssref/css3_pr_animation-fill-mode.php */
+.fade-in {
+   animation: fadeUp 0.4s ease forwards;
+}
+
+/**
+ * @keyframes fadeUp: Defines the "fade and slide" motion.
+ * It creates a subtle upward drift while increasing visibility.
+ * Starting point: 10px lower and completely transparent.
+ * Ending point: Original position and fully opaque.
+ * Reference: https://developer.mozilla.org
+ */
+@keyframes fadeUp {
+   from {
+      opacity: 0; /* Start fully invisible */
+      transform: translateY(
+         10px
+      ); /* Start 10 pixels below the final position */
+   }
+   to {
+      opacity: 1; /* End fully visible */
+      transform: translateY(0); /* End at the natural, original position */
+   }
+}
+
+/* Card styling */
 .project-card {
    background: #ffffff;
    border-radius: 12px;
@@ -5,12 +39,21 @@
    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
    cursor: pointer;
    display: flex;
+   flex-direction: column;
    justify-content: space-between;
-   align-items: center;
+   align-items: stretch; /* make card content stretch full width */
+   /* align-items: center; */
+   /* Hover animation */
    transition: box-shadow 0.3s ease;
+   gap: 12px; /* spacing between content and buttons */
 }
 
+/* .project-card {
+   outline: 2px solid red;
+} */
+
 .project-card:hover {
+   transform: translateY(-4px);
    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
 }
 
@@ -48,6 +91,8 @@
 .project-actions {
    display: flex;
    gap: 8px;
+   margin-left: 8px;
+   /* border: 1px solid red; */
 }
 
 .edit-btn,
