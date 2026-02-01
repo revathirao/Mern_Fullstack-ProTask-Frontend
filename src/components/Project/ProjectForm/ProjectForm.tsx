@@ -3,7 +3,6 @@ import axios from "axios";
 import Spinner from "../../SharedComponents/Spinner/Spinner";
 import ErrorMessage from "../../SharedComponents/ErrorHandler/ErrorHandler";
 import ToastMessage from "../../SharedComponents/ToastMessage/ToastMessage";
-
 import { AuthContext } from "../../../context/authContext";
 import type { ProjectFormProps } from "../../../types/index";
 import "./ProjectForm.css";

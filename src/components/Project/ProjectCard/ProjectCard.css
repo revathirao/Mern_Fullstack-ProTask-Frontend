@@ -1,0 +1,70 @@
+.project-card {
+   background: #ffffff;
+   border-radius: 12px;
+   padding: 16px;
+   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+   cursor: pointer;
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+   transition: box-shadow 0.3s ease;
+}
+
+.project-card:hover {
+   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+.project-content h3 {
+   margin: 0;
+   font-size: 1.1rem;
+}
+
+.project-content p {
+   margin: 6px 0;
+   font-size: 0.9rem;
+   color: #555;
+}
+
+/* Status badge */
+.status {
+   display: inline-block;
+   padding: 4px 10px;
+   border-radius: 20px;
+   font-size: 0.75rem;
+   font-weight: 600;
+}
+
+.status.active {
+   background-color: #e0f7e9;
+   color: #1b8f4b;
+}
+
+.status.completed {
+   background-color: #e8eaf6;
+   color: #3f51b5;
+}
+
+/* Action buttons */
+.project-actions {
+   display: flex;
+   gap: 8px;
+}
+
+.edit-btn,
+.delete-btn {
+   border: none;
+   padding: 6px 12px;
+   border-radius: 6px;
+   font-size: 0.8rem;
+   cursor: pointer;
+}
+
+.edit-btn {
+   background-color: #1976d2;
+   color: white;
+}
+
+.delete-btn {
+   background-color: #d32f2f;
+   color: white;
+}
