@@ -6,15 +6,23 @@ import Dashboard from "../src/pages/DashboardPage/DashboardPage";
 import ProtectedRoutes from "../src/routes/ProtectedRoutes.tsx";
 import Projects from "./components/Project/Projects/Projects.tsx";
 import "./App.css";
+import Header from "./components/SharedComponents/Header/Header.tsx";
+import { AuthContext } from "./context/authContext.tsx";
+import { useContext } from "react";
+
 /*- Dashboard and Projects are protected
 - User must be logged in to access them
 */
 function App() {
+   const { user } = useContext(AuthContext);
+
    return (
       <>
-         <h1>Pro-Tasker</h1>
-         <p>Frontend initialized successfully</p>
-
+         {/* Header is outside Routes → visible on all pages */}
+         {/* Show header only if user is logged in */}
+         {user && <Header />}{" "}
+         {/* <h1>Pro-Tasker</h1>
+         <p>Frontend initialized successfully</p> */}
          <Routes>
             <Route path="/" element={<Navigate to="/login" />} />
             <Route path="/login" element={<Login />} />
@@ -33,6 +41,15 @@ function App() {
             {/* Protected Projects Page */}
             <Route
                path="/projects"
+               element={
+                  <ProtectedRoutes>
+                     <Projects />
+                  </ProtectedRoutes>
+               }
+            />
+
+            <Route
+               path="/projects/:id"
                element={
                   <ProtectedRoutes>
                      <Projects />
