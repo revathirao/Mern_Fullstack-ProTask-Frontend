@@ -2,6 +2,8 @@ import { useContext, useState } from "react";
 import axios from "axios";
 import Spinner from "../../SharedComponents/Spinner/Spinner";
 import ErrorMessage from "../../SharedComponents/ErrorHandler/ErrorHandler";
+import ToastMessage from "../../SharedComponents/ToastMessage/ToastMessage";
+
 import { AuthContext } from "../../../context/authContext";
 import type { ProjectFormProps } from "../../../types/index";
 import "./ProjectForm.css";
@@ -30,6 +32,8 @@ export default function ProjectForm({
 
    // Get token from AuthContext
    const { token } = useContext(AuthContext);
+
+   const [success, setSuccess] = useState(false);
 
    // Handle form submit
    async function handleSubmit(e: React.FormEvent) {
@@ -70,7 +74,12 @@ export default function ProjectForm({
          console.log("Project created:", res.data);
 
          // Refresh projects in parent
-         onProjectCreated();
+         // onProjectCreated();
+         // Pass the newly created project to parent
+         onProjectCreated(res.data); // res.data = new project object
+
+         setSuccess(true);
+         setTimeout(() => setSuccess(false), 2500);
 
          //Close the form
          onClose();
@@ -90,12 +99,17 @@ export default function ProjectForm({
 
    // JSX for Project form
    return (
-      //  Define the form element, attach the submission handler, and apply styling via CSS class
+      //  Define the form element, attach the submission handle
       <form onSubmit={handleSubmit} className="project-form">
          {/* Header */}
          <h2>Create Project</h2>
-         {/* Display an error message if the 'error' state contains a value */}
+         {/* Display an inline error message if the 'error' state contains a value
+          *Shows validation errors (e.g., empty project name)*/}
          {error && <ErrorMessage message={error} />}
+         {/* ToastMessage:
+          *-Shows success feedback after project creation
+          *- Appears for a few seconds and disappears automatically*/}
+         {success && <ToastMessage message="Project created 🎉" />}
          {/* Project name input */}
          <input
             type="text"

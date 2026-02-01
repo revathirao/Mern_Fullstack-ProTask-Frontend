@@ -1,0 +1,47 @@
+.toast-message {
+   position: fixed;
+   bottom: 30px;
+   right: 30px;
+   padding: 12px 20px;
+   border-radius: 999px;
+   font-size: 0.9rem;
+   color: white;
+   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+   z-index: 1001;
+   animation:
+      fadein 0.3s,
+      fadeout 0.3s 2.2s;
+}
+
+/* success type */
+.toast-message.success {
+   background-color: #16a34a;
+}
+
+/* error type */
+.toast-message.error {
+   background-color: #dc2626;
+}
+
+/* animations */
+@keyframes fadein {
+   from {
+      opacity: 0;
+      transform: translateY(10px);
+   }
+   to {
+      opacity: 1;
+      transform: translateY(0);
+   }
+}
+
+@keyframes fadeout {
+   from {
+      opacity: 1;
+      transform: translateY(0);
+   }
+   to {
+      opacity: 0;
+      transform: translateY(10px);
+   }
+}

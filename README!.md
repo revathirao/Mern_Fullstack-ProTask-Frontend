@@ -101,3 +101,161 @@ User is redirected to dashboard.
 
 Errors displayed if login fails.
 https://picsum.photos for images
+
+---
+
+Pro-Tasker: Challenges & Solutions
+1️⃣ Projects not loading / blank page
+
+Problem:
+
+Visiting /projects sometimes showed a blank page.
+
+Console showed: projects.map is not a function.
+
+Cause:
+
+API response was not always an array (sometimes wrapped in { projects: [...] }).
+
+Initial state could be undefined or invalid type.
+
+Solution:
+
+Always normalize response before setting state:
+
+setProjects(
+Array.isArray(res.data)
+? res.data
+: Array.isArray(res.data.projects)
+? res.data.projects
+: [],
+);
+
+Added Array.isArray(projects) check before .map() in JSX.
+
+2️⃣ onProjectCreated TypeScript error
+
+Problem:
+
+Redline: Type '(newProject: any) => void' is not assignable to type '() => void'.
+
+Cause:
+
+ProjectFormProps originally expected onProjectCreated: () => void, but we were passing (newProject) => ....
+
+Solution:
+
+Update ProjectFormProps interface to accept new project:
+
+export interface ProjectFormProps {
+onClose: () => void;
+onProjectCreated: (newProject: any) => void; // new project object
+}
+
+Pass the new project in ProjectForm:
+
+onProjectCreated(res.data.newProject);
+
+Updated parent Projects.tsx to handle adding new project to state safely:
+
+const handleProjectCreated = (newProject: any) => {
+setProjects((prevProjects) =>
+Array.isArray(prevProjects) ? [newProject, ...prevProjects] : [newProject]
+);
+};
+
+3️⃣ Modal + Spinner + Toast integration
+
+Problems:
+
+Modal was added but ProjectForm inside modal caused double forms if inline form was still rendered.
+
+Spinner didn’t show correctly in some cases.
+
+Success toast message was tricky to display and auto-hide.
+
+Solutions:
+
+Wrap form inside Modal component only if showForm is true.
+
+Removed inline ProjectForm from page outside modal.
+
+Added isLoading state and conditional rendering:
+
+<button type="submit" disabled={isLoading}>
+  {isLoading ? <><Spinner /> Loading...</> : "Create Project"}
+</button>
+
+Added success toast feedback:
+
+{success && <ToastMessage message="Project created 🎉" />}
+
+Auto-hide success toast using setTimeout.
+
+4️⃣ Inline validation
+
+Problem:
+
+Users could submit empty project names.
+
+Solution:
+
+Minimal inline validation inside handleSubmit:
+
+if (!name.trim()) {
+setError("Project name is required");
+return;
+}
+
+Error displayed using reusable ErrorMessage component:
+
+{error && <ErrorMessage message={error} />}
+
+5️⃣ React + TypeScript safety
+
+Problems:
+
+prev not iterable errors (prevProjects sometimes undefined).
+
+Passing props incorrectly caused TS redlines.
+
+Solutions:
+
+Safe state updates using:
+
+setProjects((prevProjects) => Array.isArray(prevProjects) ? [...prevProjects, newProject] : [newProject]);
+
+Updated TS types for props and state.
+
+6️⃣ CSS / Layout issues
+
+Problem:
+
+Initial page looked very basic and unprofessional.
+
+Solution:
+
+Added full-page gradient background, spacing, responsive grid, project cards, hover effects.
+
+Result: clean, professional, responsive layout with cards and header.
+
+References / Resources Used
+Feature Resource / Reference
+Axios API calls Axios Docs
+
+React Context / JWT Custom AuthContext (pattern from official React docs)
+useEffect + async React Hooks FAQ
+
+TypeScript Props & Interfaces TypeScript Handbook
+
+Modal overlay CSS CSS Tricks: Centering with flex
+
+Spinner component Reused approach from RegisterPage
+Toast notifications Lightweight custom toast (React component + CSS)
+Inline validation React forms best practices
+
+✅ Summary:
+
+Most issues came from state type mismatch, props misalignment, and API response inconsistencies.
+
+Solutions involved safe state handling, TypeScript updates, modal encapsulation, and loading / toast UX improvements.

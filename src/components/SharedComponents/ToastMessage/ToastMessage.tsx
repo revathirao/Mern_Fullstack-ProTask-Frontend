@@ -1,3 +1,5 @@
+import "./ToastMessage.css";
+
 interface ToastMessageProps {
    message: string;
    type?: "success" | "error"; // optional for future use

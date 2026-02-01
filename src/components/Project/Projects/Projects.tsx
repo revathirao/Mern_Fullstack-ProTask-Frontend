@@ -3,6 +3,7 @@ import axios from "axios";
 import { AuthContext } from "../../../context/authContext";
 import ProjectForm from "../../Project/ProjectForm/ProjectForm";
 import "./projects.css";
+import Modal from "../../SharedComponents/Modal/Modal";
 
 /**Projects Page Component
 Purpose:
@@ -33,9 +34,20 @@ export default function Projects() {
                },
             },
          );
-
+         console.log("Fetched projects:", res.data);
          // Update the component state with the array of projects returned from the server
-         setProjects(res.data);
+         // setProjects(res.data);
+         // setProjects(
+         //    Array.isArray(res.data) ? res.data : res.data.projects || [],
+         // );
+
+         setProjects(
+            Array.isArray(res.data)
+               ? res.data
+               : Array.isArray(res.data.projects)
+                 ? res.data.projects
+                 : [],
+         );
       } catch (err: any) {
          // Log specific error messages from the server response or general network errors
          console.error(
@@ -55,8 +67,31 @@ export default function Projects() {
       // Re-run this effect only when the 'token' variable changes
    }, [token]);
 
+   /**
+    * Handles a newly created project
+    * Adds it to existing projects array
+    * Keeps state safe (array always)
+    */
+   // const handleProjectCreated = (newProject: any) => {
+   //    setProjects((prevProjects) => {
+   //       // Ensure previous state is an array
+   //       return [...prevProjects, newProject];
+   //    });
+   // };
+
+   const handleProjectCreated = (newProject: any) => {
+      setProjects((prevProjects) => {
+         // 🛡 Safety check
+         if (!Array.isArray(prevProjects)) {
+            return [newProject];
+         }
+         return [...prevProjects, newProject];
+      });
+   };
+
    return (
       <div className="projects-pagecontainer">
+         <h1>Test Projects Page</h1>
          {/* Header section: title + action */}
          <div className="projects-header">
             <div>
@@ -73,12 +108,35 @@ export default function Projects() {
          </div>
 
          {/* Show Project Form */}
-         {showForm && (
+         {/* {showForm && (
             <ProjectForm
                onClose={() => setShowForm(false)}
                onProjectCreated={fetchProjects}
             />
+         )} */}
+
+         {/* showForm controls modal visibility */}
+         {showForm && (
+            <Modal onClose={() => setShowForm(false)}>
+               {/*
+                **ProjectForm is wrapped inside Modal
+                *- onClose: closes the modal
+                *- onProjectCreated: updates parent project list
+                *- newProject is added to the top of projects array
+                */}
+               <ProjectForm
+                  onClose={() => setShowForm(false)}
+                  onProjectCreated={handleProjectCreated}
+                  // (newProject) =>
+                  // setProjects((prev) => [newProject, ...prev])
+                  // }
+               />
+            </Modal>
          )}
+
+         {/* Project creation form */}
+         {/* <ProjectForm onProjectCreated={handleProjectCreated} /> */}
+
          {/**Project list container*/}
          <div className="projects-list">
             {projects.length === 0 ? (
@@ -86,12 +144,13 @@ export default function Projects() {
             ) : (
                <div className="project-items">
                   {/* Display fetched projects */}
-                  {projects.map((project) => (
-                     <div key={project._id} className="project-card">
-                        <h3>{project.name}</h3>
-                        <p>{project.description}</p>
-                     </div>
-                  ))}
+                  {Array.isArray(projects) &&
+                     projects.map((project) => (
+                        <div key={project._id} className="project-card">
+                           <h3>{project.name}</h3>
+                           <p>{project.description}</p>
+                        </div>
+                     ))}
                </div>
             )}
          </div>

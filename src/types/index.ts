@@ -22,5 +22,7 @@ export interface RegisterCredentials {
 
 export interface ProjectFormProps {
    onClose: () => void;
-   onProjectCreated: () => void;
+   //  onProjectCreated: () => void;
+   // MUST accept the new project
+   onProjectCreated: (newProject: any) => void; // allow passing new project
 }
