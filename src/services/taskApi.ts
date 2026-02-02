@@ -15,7 +15,8 @@ const BASE_URL = `${import.meta.env.VITE_API_URL}/api/projects`;
  */
 export async function fetchTasks(projectId: string, token: string) {
    try {
-      if (!token || !projectId) throw new Error("No auth token provided"); // Safety check
+      if (!token || !projectId)
+         throw new Error("Missing auth token or projectId"); // Safety check
 
       // Axios GET request to /api/projects/:projectId/tasks
       const response = await axios.get(`${BASE_URL}/${projectId}/tasks`, {
@@ -48,11 +49,15 @@ export async function createTask(projectId: string, body: any, token: string) {
    try {
       if (!token) throw new Error("No auth token provided"); // Safety check
 
-      const response = await axios.post(`BASE_URL/${projectId}/tasks`, body, {
-         headers: {
-            Authorization: `Bearer ${token}`,
+      const response = await axios.post(
+         `${BASE_URL}/${projectId}/tasks`,
+         body,
+         {
+            headers: {
+               Authorization: `Bearer ${token}`,
+            },
          },
-      });
+      );
       console.log("Tasks created successfully 🎉");
       // Return created task
       return response.data;
@@ -83,7 +88,7 @@ export async function updateTask(
       if (!token) throw new Error("No auth token provided");
 
       const response = await axios.put(
-         `BASE_URL/${projectId}/tasks/${taskId}`,
+         `${BASE_URL}/${projectId}/tasks/${taskId}`,
          body,
          {
             headers: {
@@ -104,24 +109,32 @@ export async function updateTask(
 
 /**
  * Delete a task
- **@param projectId - Parent project ID
+ * @param projectId - Parent project ID
  * @param taskId - Task ID to delete
  * @param token - Auth token
  */
-export async function deleteTask(projectId: string, token: string) {
+export async function deleteTask(
+   projectId: string,
+   taskId: string,
+   token: string,
+) {
    try {
       if (!token) throw new Error("No auth token provided");
 
-      const response = await axios.delete(`${BASE_URL}/${projectId}`, {
-         headers: {
-            Authorization: `Bearer ${token}`,
+      const response = await axios.delete(
+         `${BASE_URL}/${projectId}/tasks/${taskId}`,
+         {
+            headers: {
+               Authorization: `Bearer ${token}`,
+            },
          },
-      });
-      console.log("Tasks deleted successfully 🎉");
+      );
+
+      console.log("Task deleted successfully 🎉");
       return response.data;
    } catch (error: any) {
       console.error(
-         "Error deleting tasks:",
+         "Error deleting task:",
          error.response?.data?.message || error.message,
       );
       throw error;

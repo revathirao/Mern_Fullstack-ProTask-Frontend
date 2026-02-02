@@ -16,9 +16,9 @@ import {
  * - Deletes tasks
  * - Manages loading & error state
  * * UI components should ONLY call these functions.
- ** @param projectId - ID of the project whose tasks are managed
+ **@param projectId - ID of the project whose tasks are managed
  * @param token - Auth token for protected API calls
- ** @returns Task state + CRUD handlers
+ **@returns Task state + CRUD handlers
  */
 export function useTasks(projectId: string, token: string) {
    // Holds all tasks for the project
@@ -65,7 +65,7 @@ export function useTasks(projectId: string, token: string) {
          setTasks((prev) => [...prev, newTask]);
          return newTask;
       } catch (error: any) {
-         setError(error.message || "Failed to load tasks");
+         setError(error.message || "Failed to add tasks");
       } finally {
          setLoading(false); //stoploadingsuccess or error
       }
@@ -95,7 +95,7 @@ export function useTasks(projectId: string, token: string) {
 
          return updatedTask;
       } catch (error: any) {
-         setError(error.message || "Failed to load tasks");
+         setError(error.message || "Failed to update tasks");
       } finally {
          setLoading(false); //stoploadingsuccess or error
       }
@@ -115,7 +115,7 @@ export function useTasks(projectId: string, token: string) {
          // Remove deleted task from state
          setTasks((prev) => prev.filter((task) => task._id !== taskId));
       } catch (error: any) {
-         setError(error.message || "Failed to load tasks");
+         setError(error.message || "Failed to delete tasks");
       } finally {
          setLoading(false); //stoploadingsuccess or error
       }

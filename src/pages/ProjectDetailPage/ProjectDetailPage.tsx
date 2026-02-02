@@ -21,17 +21,18 @@ export default function ProjectDetails() {
    const { id } = useParams<{ id: string }>(); // get project ID from route
    const navigate = useNavigate(); // Used to redirect user (ex: after delete)
 
-   // Access user token from AuthContext for authenticated requests
-   const { token } = useContext(AuthContext);
+   // // Access user token from AuthContext for authenticated requests
+   // const { token } = useContext(AuthContext);
 
-   // Store project data fetched from backend
-   const [project, setProject] = useState<any>(null);
+   // // Store project data fetched from backend
+   // const [project, setProject] = useState<any>(null);
 
-   // State to store error messages
-   const [error, setError] = useState("");
+   // // State to store error messages
+   // const [error, setError] = useState("");
 
-   // Track loading state to control Spinner visibility
-   const [isLoading, setIsLoading] = useState<boolean>(false);
+   // // Track loading state to control Spinner visibility
+   // const [isLoading, setIsLoading] = useState<boolean>(false);
+const { projects, loading, error, loadProjects, editProject, removeProject } = useProjects(token);
 
    // Modal visibility for edit
    const [showEditModal, setShowEditModal] = useState<boolean>(false);
@@ -45,19 +46,20 @@ export default function ProjectDetails() {
       if (!id || !token) return;
 
       try {
-         setIsLoading(true);
-         setError("");
+         // setIsLoading(true);
+         // setError("");
 
          // if (!token || !id) return; // Safety check
 
-         const res = await axios.get(
-            `${import.meta.env.VITE_API_URL}/api/projects/${id}`,
-            {
-               headers: {
-                  Authorization: `Bearer ${token}`,
-               },
-            },
-         );
+         // const res = await axios.get(
+         //    `${import.meta.env.VITE_API_URL}/api/projects/${id}`,
+         //    {
+         //       headers: {
+         //          Authorization: `Bearer ${token}`,
+         //       },
+         //    },
+         // );
+         const data = await fetchProjectById(token, id);
          console.log("Before setProject:", res.data, "isLoading:", isLoading);
          setProject(res.data);
          console.log("After setProject:", res.data, "isLoading:", isLoading);
@@ -100,24 +102,14 @@ export default function ProjectDetails() {
       if (!confirmed) return;
 
       try {
-         setIsLoading(true);
-         await axios.delete(
-            `${import.meta.env.VITE_API_URL}/api/projects/${id}`,
-            {
-               headers: { Authorization: `Bearer ${token}` },
-            },
-         );
-
+         await removeProject(id)
          setSuccess("Project deleted successfully 🎉");
-
          // Redirect back to projects list after 1.5s
          setTimeout(() => navigate("/projects"), 1500);
       } catch (err: any) {
-         console.error("Error deleting project:", err);
-         setError(err.response?.data?.message || "Failed to delete project");
-      } finally {
-         setIsLoading(false);
-      }
+         console.error(err);
+      setError(err.message || "Failed to delete project");
+      
    }
 
    // Loading state
