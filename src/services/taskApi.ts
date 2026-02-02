@@ -1,5 +1,4 @@
 import axios from "axios";
-import { useState } from "react";
 
 /*Base URL for all task-related API calls
     - All task routes are nested under projects, e.g., 
@@ -44,7 +43,7 @@ export async function fetchTasks(projectId: string, token: string) {
  **@param projectId - ID of the project this task belongs to
  * @param  Body - Task payload (title, description, status, priority, etc.)
  * @param token - Auth token for protected route
- * * @returns Newly created task from backend
+ ** @returns Newly created task from backend
  */
 export async function createTask(projectId: string, body: any, token: string) {
    try {
