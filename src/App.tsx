@@ -3,13 +3,13 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import Login from "../src/pages/LoginPage/LoginPage";
 import Register from "../src/pages/RegisterPage/RegisterPage";
 import Dashboard from "../src/pages/DashboardPage/DashboardPage";
-import ProtectedRoutes from "../src/routes/ProtectedRoutes.tsx";
-import Projects from "./components/Project/Projects/Projects.tsx";
+import ProtectedRoutes from "../src/routes/ProtectedRoutes";
+import Projects from "./components/Projects/Projects/Projects.tsx";
 import "./App.css";
-import Header from "./components/SharedComponents/Header/Header.tsx";
+import Header from "./components/SharedComponents/Header/Header";
 import { AuthContext } from "./context/authContext.tsx";
 import { useContext } from "react";
-import ProjectDetails from "./pages/ProjectDetai/ProjectDetail.tsx";
+import ProjectDetails from "./pages/ProjectDetailPage/ProjectDetailPage.tsx";
 
 /*- Dashboard and Projects are protected
 - User must be logged in to access them

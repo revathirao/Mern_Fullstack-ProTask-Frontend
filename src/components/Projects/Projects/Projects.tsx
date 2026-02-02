@@ -2,10 +2,10 @@ import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { AuthContext } from "../../../context/authContext";
-import ProjectForm from "../../Project/ProjectForm/ProjectForm";
+import ProjectForm from "../ProjectForm/ProjectForm";
 import "./projects.css";
 import Modal from "../../SharedComponents/Modal/Modal";
-import ProjectCard from "../ProjectCard/ProjectCard"
+import ProjectCard from "../ProjectCard/ProjectCard";
 
 /**Projects Page Component
 Purpose:

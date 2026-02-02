@@ -18,7 +18,13 @@ import "./ProjectForm.css";
 export default function ProjectForm({
    onClose,
    onProjectCreated,
+   isEdit,
+   onProjectUpdated,
+   project,
 }: ProjectFormProps) {
+   console.log("ProjectForm mounted"); // <<<<<<<<<<<<<<<< ADD THIS
+   console.log("ProjectForm props:", { project, isEdit });
+
    // Local state for form fields
    const [name, setName] = useState("");
    const [description, setDescription] = useState("");
@@ -34,10 +40,12 @@ export default function ProjectForm({
    const { token } = useContext(AuthContext);
 
    const [success, setSuccess] = useState(false);
-
+   console.log("ProjectForm token:", token);
+   console.log("ProjectForm props:", { project, isEdit });
    // Handle form submit
    async function handleSubmit(e: React.FormEvent) {
       e.preventDefault(); // Prevent default page reload
+      console.log("Form submitted"); // <-- add this
 
       // Clear any previous error
       setError("");
@@ -53,6 +61,7 @@ export default function ProjectForm({
 
          // Enable spinner before API call
          setIsLoading(true);
+         console.log("Sending request...");
 
          /*
           *Axios POST request to backend
@@ -76,7 +85,16 @@ export default function ProjectForm({
          // Refresh projects in parent
          // onProjectCreated();
          // Pass the newly created project to parent
-         onProjectCreated(res.data); // res.data = new project object
+         // onProjectCreated(res.data); // res.data = new project object
+
+         // Refresh parent depending on create or edit
+         if (isEdit) {
+            // Call update callback if editing
+            onProjectUpdated && onProjectUpdated(res.data);
+         } else {
+            // Call create callback if creating
+            onProjectCreated(res.data);
+         }
 
          setSuccess(true);
          setTimeout(() => setSuccess(false), 2500);
