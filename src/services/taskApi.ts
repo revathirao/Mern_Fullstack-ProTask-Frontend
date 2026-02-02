@@ -5,7 +5,7 @@ import axios from "axios";
     POST /api/projects/:projectId/tasks
   - Having a BASE_URL makes it easier to maintain
 */
-const BASE_URL = `${import.meta.env.VITE_API_URL}/api/projects}`;
+const BASE_URL = `${import.meta.env.VITE_API_URL}/api/projects`;
 
 /*
  * Fetch all tasks for a given project
@@ -15,9 +15,7 @@ const BASE_URL = `${import.meta.env.VITE_API_URL}/api/projects}`;
  */
 export async function fetchTasks(projectId: string, token: string) {
    try {
-      // if (!token || !id) return; // Safety check
-
-      if (!token) return; // Safety check
+      if (!token || !projectId) throw new Error("No auth token provided"); // Safety check
 
       // Axios GET request to /api/projects/:projectId/tasks
       const response = await axios.get(`${BASE_URL}/${projectId}/tasks`, {
@@ -35,6 +33,7 @@ export async function fetchTasks(projectId: string, token: string) {
          "Error fetching tasks:",
          error.response?.data?.message || error.message,
       );
+      throw error;
    }
 }
 
@@ -43,37 +42,36 @@ export async function fetchTasks(projectId: string, token: string) {
  **@param projectId - ID of the project this task belongs to
  * @param  Body - Task payload (title, description, status, priority, etc.)
  * @param token - Auth token for protected route
- ** @returns Newly created task from backend
+ **@returns Newly created task from backend
  */
 export async function createTask(projectId: string, body: any, token: string) {
    try {
-      const response = await axios.post(
-         `${import.meta.env.VITE_API_URL}/api/projects/${projectId}/tasks`,
-         body,
-         {
-            headers: {
-               Authorization: `Bearer ${token}`,
-            },
+      if (!token) throw new Error("No auth token provided"); // Safety check
+
+      const response = await axios.post(`BASE_URL/${projectId}/tasks`, body, {
+         headers: {
+            Authorization: `Bearer ${token}`,
          },
-      );
+      });
       console.log("Tasks created successfully 🎉");
       // Return created task
       return response.data;
    } catch (error: any) {
       console.error(
-         "Error creating rasks:",
+         "Error creating tasks:",
          error.response?.data?.message || error.message,
       );
+      throw error;
    }
 }
 
 /**
  * Update an existing task
- * * @param projectId - Parent project ID
+ **@param projectId - Parent project ID
  * @param taskId - Task ID to update
  * @param body - Updated task fields
  * @param token - Auth token
- * * @returns Updated task
+ **@returns Updated task
  */
 export async function updateTask(
    projectId: string,
@@ -82,8 +80,10 @@ export async function updateTask(
    token: string,
 ) {
    try {
+      if (!token) throw new Error("No auth token provided");
+
       const response = await axios.put(
-         `${import.meta.env.VITE_API_URL}/api/projects/${projectId}/tasks/${taskId}`,
+         `BASE_URL/${projectId}/tasks/${taskId}`,
          body,
          {
             headers: {
@@ -98,29 +98,25 @@ export async function updateTask(
          "Error updating tasks:",
          error.response?.data?.message || error.message,
       );
+      throw error;
    }
 }
 
 /**
  * Delete a task
- ** @param projectId - Parent project ID
+ **@param projectId - Parent project ID
  * @param taskId - Task ID to delete
  * @param token - Auth token
  */
-export async function deleteTask(
-   projectId: string,
-   taskId: string,
-   token: string,
-) {
+export async function deleteTask(projectId: string, token: string) {
    try {
-      const response = await axios.delete(
-         `${import.meta.env.VITE_API_URL}/api/projects/${projectId}/tasks/${taskId}`,
-         {
-            headers: {
-               Authorization: `Bearer ${token}`,
-            },
+      if (!token) throw new Error("No auth token provided");
+
+      const response = await axios.delete(`${BASE_URL}/${projectId}`, {
+         headers: {
+            Authorization: `Bearer ${token}`,
          },
-      );
+      });
       console.log("Tasks deleted successfully 🎉");
       return response.data;
    } catch (error: any) {
@@ -128,5 +124,6 @@ export async function deleteTask(
          "Error deleting tasks:",
          error.response?.data?.message || error.message,
       );
+      throw error;
    }
 }
