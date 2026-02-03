@@ -42,8 +42,10 @@ export function useTasks(projectId: string, token: string) {
          setError(""); // Reset previous errors
 
          const data = await fetchTasks(projectId, token);
+         console.log("Fetched tasks:", data);
          // setTasks(data); //save tasks to state
-         setTasks(Array.isArray(data) ? data : []);
+         // setTasks(Array.isArray(data) ? data : []);
+         setTasks(Array.isArray(data.tasks) ? data.tasks : data);
       } catch (error: any) {
          setError(error.message || "Failed to load tasks");
       } finally {

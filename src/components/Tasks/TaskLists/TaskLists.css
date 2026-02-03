@@ -4,6 +4,8 @@
    border: 1px solid #ddd;
    border-radius: 8px;
    background: #f9f9f9;
+   width: 100%;
+   max-width: 100%;
 }
 
 .task-list h3 {

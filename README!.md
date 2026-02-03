@@ -289,3 +289,15 @@ onClick={(id) => navigate(`/projects/${id}`)}
 Temporary console logs not removed:
 During debugging, multiple console.log() statements were left in ProjectCard and Projects.tsx.
 Solution: We removed or commented unnecessary logs to clean up the console.
+
+1. Challenge: State Synchronization (Race Conditions)
+   The Problem: When you created a task, you were calling addTask() and loadTasks() immediately after. Since these are asynchronous, sometimes the UI tried to "load" the old list before the "add" was fully finished on the server, or the state updates conflicted.
+   The Solution: You updated the useTasks hook to optimistically or locally update the state. By using setTasks((prev) => [...prev, newTask]) inside the hook, the UI updates instantly without needing a second network request.
+2. Challenge: API Data Structure Mismatch
+   The Problem: The UI expected an Array, but many APIs wrap their data in an object (e.g., { tasks: [], total: 10 }). Using setTasks(data) directly on an object would break the .map() function in your JSX.
+   The Solution: You implemented a Normalization/Safety Check in the hook:
+   setTasks(Array.isArray(data) ? data : []);
+   This ensures that even if the API returns an unexpected format, the application won't crash. React documentation on rendering lists emphasizes the need for stable arrays.
+3. Challenge: Component Re-rendering & Stable Keys
+   The Problem: React sometimes fails to visually update list items if the key prop is unstable or if the projectId changes without a fresh fetch.
+   The Solution: You used a Dependency Array in useEffect inside TaskList.tsx that listens to [projectId, token]. This ensures that whenever the user switches projects, the Effect Hook triggers a fresh loadTasks().

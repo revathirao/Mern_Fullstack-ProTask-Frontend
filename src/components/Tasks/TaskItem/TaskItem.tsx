@@ -1,35 +1,58 @@
 import type { TaskItemProps } from "../../../types";
-
-// Functional component for a single task row
+import "./TaskItem.css";
+/**
+ * TaskItem Component
+ * - Represents a single task row in the TaskList
+ * - Displays: Title | Description | Status | Priority | Actions
+ **@param task - The task object to display
+ * @param onEdit - Function called when user clicks edit
+ * @param onDelete - Function called when user clicks delete
+ * @returns JSX.Element - single task row
+ */
 export default function TaskItem({ task, onEdit, onDelete }: TaskItemProps) {
+   console.log("TaskItem task:", task);
+   console.log(task);
+
    return (
-      <div className="task-item" /* Main container for the row */>
-         {/* Left side: Task details */}
-         <div className="task-info">
-            <h4 className="task-title">{task.title}</h4>
-            {task.description && (
-               <p className="task-desc">{task.description}</p>
-            )}
+      <div className="task-item-row">
+         {/* Column 1: Task Title */}
+         <div className="task-item-column task-title">{task.title}</div>
+
+         {/* Column 2: Task Description (optional) */}
+         <div className="task-item-column task-desc">
+            {task.description || "-"}
          </div>
 
-         {/* Middle: Status and Priority */}
-         <div className="task-meta">
-            <span className={`status ${task.status.toLowerCase() ?? "todo"}`}>
-               {task.status}
-            </span>
+         {/* Column 3: Status */}
+         <div className="task-item-column task-status">
+            {/* Fallback to "todo" if undefined */}
             <span
-               className={`priority ${task.priority.toLowerCase() ?? "low"}`}>
-               {task.priority}
+               className={`status-badge ${task.status?.toLowerCase() || "todo"}`}>
+               {task.status || "todo"}
             </span>
          </div>
 
-         {/* Right side: Action buttons */}
-         <div className="task-actions">
-            <button onClick={() => onEdit(task)} className="edit-btn">
-               Edit
+         {/* Column 4: Priority */}
+         <div className="task-item-column task-priority">
+            <span
+               className={`priority-badge ${task.priority?.toLowerCase() || "low"}`}>
+               {task.priority || "low"}
+            </span>
+         </div>
+
+         {/* Column 5: Actions */}
+         <div className="task-item-column task-actions">
+            <button
+               className="edit-btn"
+               onClick={() => onEdit(task)}
+               title="Edit Task">
+               ✏️
             </button>
-            <button onClick={() => onDelete(task._id)} className="delete-btn">
-               Delete
+            <button
+               className="delete-btn"
+               onClick={() => onDelete(task._id)}
+               title="Delete Task">
+               🗑️
             </button>
          </div>
       </div>

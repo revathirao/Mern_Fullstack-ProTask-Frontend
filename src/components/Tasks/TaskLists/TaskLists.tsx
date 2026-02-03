@@ -27,8 +27,13 @@ export default function TaskList({ projectId }: TaskProps) {
    // Show/hide the TaskForm for adding a new task Local state for controlling "Add Task" modal
    const [showForm, setShowForm] = useState(false);
 
-   // Optional: Show success messages
+   // Show success messages
    const [toastMessage, setToastMessage] = useState("");
+   useEffect(() => {
+      if (projectId && token) {
+         loadTasks(); // Fetch tasks from backend on mount
+      }
+   }, [projectId, token]);
 
    /**
     * Handle creating a new task
@@ -44,16 +49,20 @@ export default function TaskList({ projectId }: TaskProps) {
          // Normalize task BEFORE sending it
          const normalizedTask = {
             ...taskBody,
+            title: taskBody.title,
+            description: taskBody.description,
             status: taskBody.status ?? "todo",
             priority: taskBody.priority ?? "low",
          };
          await addTask(normalizedTask); // hook handles projectId
          setToastMessage("Task added successfully! 🎉");
+         loadTasks();
          setShowForm(false); // Close form after creation
       } catch (err) {
          console.error("Failed to add task:", err);
       }
    }
+   console.log(tasks);
 
    /**
     * handleUpdateTask
@@ -103,9 +112,9 @@ export default function TaskList({ projectId }: TaskProps) {
       setShowForm(true);
    };
 
-   useEffect(() => {
-      loadTasks();
-   }, [projectId]);
+   // useEffect(() => {
+   //    loadTasks();
+   // }, [projectId]);
 
    return (
       <div className="task-list-container">
@@ -147,7 +156,7 @@ export default function TaskList({ projectId }: TaskProps) {
             {/* Table/grid headers */}
 
             <div className="task-list-header">
-               <span>Task Name</span>
+               <span>Title</span>
                <span>Description</span>
                <span>Status</span>
                <span>Priority</span>
@@ -155,7 +164,7 @@ export default function TaskList({ projectId }: TaskProps) {
             </div>
 
             {/* List of tasks */}
-            {tasks.length > 0 && !loading ? (
+            {tasks.length == 0 && !loading ? (
                // {!loading && tasks.length === 0 ? (
                <p>No tasks found. Add your first task!</p>
             ) : (
@@ -165,6 +174,7 @@ export default function TaskList({ projectId }: TaskProps) {
                      key={`${task._id}-${task.title}`}
                      task={task}
                      onEdit={() => handleEdit(task)}
+                     // onEdit={() => handleEdit}
                      onDelete={handleDelete}
                   />
                ))
