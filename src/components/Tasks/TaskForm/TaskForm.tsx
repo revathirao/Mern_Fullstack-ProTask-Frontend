@@ -1,8 +1,7 @@
-import { useState, useEffect, type FormEvent } from "react";
-import axios from "axios";
+import { useState } from "react";
 import type { TaskFormProps } from "../../../types";
 import ErrorMessage from "../../SharedComponents/ErrorHandler/ErrorHandler";
-
+import "./TaskForm.css";
 /**
  * TaskForm Component
  * Handles both creating a new task and editing an existing task.
@@ -25,9 +24,31 @@ export default function TaskForm({
    const [isSubmitting, setIsSubmitting] = useState(false);
 
    // Function to handle form submission
-   const handleSubmit = async (e: FormEvent) => {
-      e.preventDefault();
-      // We will fill API calls here next
+   const handleSubmit = (e: React.FormEvent) => {
+      e.preventDefault(); // Prevent page reload
+      if (!title.trim()) return; // validation
+
+      const payload = {
+         ...(task ?? {}), // preserve _id if editing
+         title,
+         description,
+         status,
+         priority,
+      };
+
+      try {
+         if (task && onTaskUpdated) {
+            onTaskUpdated(payload); // edit mode
+         } else if (onTaskCreated) {
+            onTaskCreated(payload); // create mode
+         }
+
+         onClose(); // close modal
+      } catch (err: any) {
+         setError(err.message || "Failed to save task");
+      } finally {
+         setIsSubmitting(false);
+      }
    };
 
    return (

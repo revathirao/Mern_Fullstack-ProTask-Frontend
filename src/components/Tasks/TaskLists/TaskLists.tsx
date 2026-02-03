@@ -1,28 +1,30 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { AuthContext } from "../../../context/authContext";
 import TaskItem from "../TaskItem/TaskItem";
 import TaskForm from "../TaskForm/TaskForm";
 import { useTasks } from "../../../hooks/useTasks";
 import type { Task, TaskProps } from "../../../types";
-import "./TaskList.css";
+import Modal from "../../SharedComponents/Modal/Modal";
+import "./TaskLists.css";
 
 /**
- * TaskList Component
- * Displays all tasks for a project and allows creating new tasks.
- * Uses `useTasks` hook for centralized task state & CRUD operations.
+ * TaskList component
+ * - Displays all tasks for a single project in a clean grid/table layout
+ *  * Uses `useTasks` hook for centralized task state & CRUD operations.
+ * @param projectId - ID of the current project
+ * @returns JSX.Element - task list with header row and TaskItem rows
  */
 export default function TaskList({ projectId }: TaskProps) {
    const { token } = useContext(AuthContext);
+   const [editingTask, setEditingTask] = useState<Task | null>(null);
 
    if (!projectId || !token) return null;
 
-   // Hook managing tasks
-   const { tasks, loading, error, addTask, removeTask } = useTasks(
-      projectId,
-      token,
-   );
+   // Hook to fetch and manage tasks
+   const { tasks, loading, error, addTask, loadTasks, removeTask, editTask } =
+      useTasks(projectId, token);
 
-   // Show/hide the TaskForm for adding a new task
+   // Show/hide the TaskForm for adding a new task Local state for controlling "Add Task" modal
    const [showForm, setShowForm] = useState(false);
 
    // Optional: Show success messages
@@ -39,13 +41,48 @@ export default function TaskList({ projectId }: TaskProps) {
       priority?: string;
    }) {
       try {
-         await addTask(taskBody); // Create task via hook
+         // Normalize task BEFORE sending it
+         const normalizedTask = {
+            ...taskBody,
+            status: taskBody.status ?? "todo",
+            priority: taskBody.priority ?? "low",
+         };
+         await addTask(normalizedTask); // hook handles projectId
          setToastMessage("Task added successfully! 🎉");
          setShowForm(false); // Close form after creation
       } catch (err) {
          console.error("Failed to add task:", err);
       }
    }
+
+   /**
+    * handleUpdateTask
+    ** This function is called when the user submits the TaskForm
+    * while editing an existing task.
+    **@param taskData - The updated task object coming from the TaskForm.
+    * It includes all task fields (title, description, status, etc.)
+    * and MUST include `_id` so we know which task to update.
+    */
+   const handleUpdateTask = async (taskData: Task) => {
+      // Safety check:
+      // If the task does not have an ID, we cannot update it
+      // (because the backend needs an ID to find the task)
+      if (!taskData._id) return;
+
+      // Call the editTask function (from useTasks hook)
+      // Sends the updated task data to the backend API
+      await editTask(taskData._id, taskData);
+
+      // Clear the currently editing task
+      // (so the UI knows we are done editing)
+      setEditingTask(null);
+
+      // Hide the task form after successful update
+      setShowForm(false);
+
+      // Show success feedback to the user
+      setToastMessage("Task updated successfully ✨");
+   };
 
    /**
     * Handle deleting a task
@@ -60,8 +97,18 @@ export default function TaskList({ projectId }: TaskProps) {
       }
    };
 
+   // Open edit form
+   const handleEdit = (task: Task) => {
+      setEditingTask(task);
+      setShowForm(true);
+   };
+
+   useEffect(() => {
+      loadTasks();
+   }, [projectId]);
+
    return (
-      <div className="task-list">
+      <div className="task-list-container">
          <h3>Project Tasks</h3>
          <h3>Tasks</h3>
 
@@ -73,36 +120,56 @@ export default function TaskList({ projectId }: TaskProps) {
          )}
 
          {/* Toggle Add Task Form */}
-         <button onClick={() => setShowForm((prev) => !prev)}>
+         <button
+            className="add-task-btn"
+            onClick={() => setShowForm((prev) => !prev)}>
             {showForm ? "Close Form" : "Add New Task"}
          </button>
 
          {/* Task Form for creating a new task */}
          {showForm && (
-            <TaskForm
-               projectId={projectId}
-               onTaskCreated={handleCreateTask}
-               onClose={() => setShowForm(false)}
-            />
+            <Modal onClose={() => setShowForm(false)}>
+               <TaskForm
+                  projectId={projectId}
+                  task={editingTask ?? undefined}
+                  onTaskCreated={handleCreateTask}
+                  onTaskUpdated={handleUpdateTask}
+                  onClose={() => setShowForm(false)}
+               />
+            </Modal>
          )}
 
          {/* Loading and error states */}
          {loading && <p>Loading tasks…</p>}
          {error && <p className="error">{error}</p>}
 
-         {/* List of tasks */}
-         {tasks.length === 0 && !loading ? (
-            <p>No tasks found. Add your first task!</p>
-         ) : (
-            tasks.map((task: Task) => (
-               <TaskItem
-                  key={task._id}
-                  task={task}
-                  onEdit={() => {}}
-                  onDelete={handleDelete}
-               />
-            ))
-         )}
+         <div className="task-list">
+            {/* Table/grid headers */}
+
+            <div className="task-list-header">
+               <span>Task Name</span>
+               <span>Description</span>
+               <span>Status</span>
+               <span>Priority</span>
+               <span>Actions</span>
+            </div>
+
+            {/* List of tasks */}
+            {tasks.length > 0 && !loading ? (
+               // {!loading && tasks.length === 0 ? (
+               <p>No tasks found. Add your first task!</p>
+            ) : (
+               tasks.map((task: Task) => (
+                  <TaskItem
+                     // key={task._id}
+                     key={`${task._id}-${task.title}`}
+                     task={task}
+                     onEdit={() => handleEdit(task)}
+                     onDelete={handleDelete}
+                  />
+               ))
+            )}
+         </div>
       </div>
    );
 }

@@ -10,8 +10,8 @@ import {
    deleteProject as deleteProjectAction,
    updateProject as updateProjectAction,
 } from "../../utils/projectUtils";
-
 import "./ProjectDetailPage.css";
+import TaskList from "../../components/Tasks/TaskLists/TaskLists";
 
 /**
  * ProjectDetails Page
@@ -135,6 +135,12 @@ export default function ProjectDetails() {
                />
             </Modal>
          )}
+
+         {/* Task List */}
+         <div className="project-tasks-section">
+            <h2>Tasks</h2>
+            <TaskList projectId={project._id} />
+         </div>
       </div>
    );
 }

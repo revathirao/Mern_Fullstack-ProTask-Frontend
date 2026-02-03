@@ -149,6 +149,12 @@
    font-weight: 600;
 }
 
+.project-tasks-section {
+   margin-top: 2rem;
+   padding: 1rem;
+   border-top: 1px solid #ddd;
+}
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
    .project-details-container {

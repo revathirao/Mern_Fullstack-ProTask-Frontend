@@ -17,32 +17,12 @@ export default function ProjectForm({
    onClose,
    onProjectCreated,
    onProjectUpdated,
-   // project,
    editProject,
 }: ProjectFormProps) {
    const [name, setName] = useState("");
    const [description, setDescription] = useState("");
    const [status, setStatus] = useState("");
 
-   // const [success, setSuccess] = useState(false);
-
-   /**
-    * Populate form when editing
-    * Clear form when creating
-    */
-   // useEffect(() => {
-   //    const source = editProject || project;
-
-   //    if (source) {
-   //       setName(source.name ?? "");
-   //       setDescription(source.description ?? "");
-   //       setStatus(source.status ?? "Active");
-   //    } else {
-   //       setName("");
-   //       setDescription("");
-   //       setStatus("Active");
-   //    }
-   // }, [editProject, project]);
    useEffect(() => {
       if (editProject) {
          setName(editProject.name ?? "");

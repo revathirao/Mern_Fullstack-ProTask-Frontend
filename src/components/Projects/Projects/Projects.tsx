@@ -72,7 +72,7 @@ export default function Projects() {
    // Inside handleProjectCreated
    const handleProjectCreated = async (projectBody: any) => {
       try {
-         const newProject = await createProjectUtil(projectBody, addProject);
+         await createProjectUtil(projectBody, addProject);
          setSuccess("Project created successfully 🎉");
          // Optionally do more with newProject
       } catch (err) {

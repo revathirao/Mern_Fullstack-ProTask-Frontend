@@ -14,10 +14,11 @@ export default function TaskItem({ task, onEdit, onDelete }: TaskItemProps) {
 
          {/* Middle: Status and Priority */}
          <div className="task-meta">
-            <span className={`status ${task.status.toLowerCase()}`}>
+            <span className={`status ${task.status.toLowerCase() ?? "todo"}`}>
                {task.status}
             </span>
-            <span className={`priority ${task.priority.toLowerCase()}`}>
+            <span
+               className={`priority ${task.priority.toLowerCase() ?? "low"}`}>
                {task.priority}
             </span>
          </div>
