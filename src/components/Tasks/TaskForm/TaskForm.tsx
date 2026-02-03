@@ -7,7 +7,6 @@ import "./TaskForm.css";
  * Handles both creating a new task and editing an existing task.
  */
 export default function TaskForm({
-   projectId,
    task,
    onTaskCreated,
    onTaskUpdated,
@@ -52,73 +51,76 @@ export default function TaskForm({
    };
 
    return (
-      <form onSubmit={handleSubmit} className="task-form">
-         {/* Title Field  */}
-         <div className="form-group">
-            <label htmlFor="title">
-               Title <span style={{ color: "red" }}>*</span>
-            </label>
-            <input
-               type="text"
-               id="title"
-               value={title} // controlled input using state
-               onChange={(e) => setTitle(e.target.value)} // update state on change
-               placeholder="Enter task title"
-               required // HTML5 validation
-            />
-         </div>
+      <div className="task-form-container">
+         <h2>{task && task._id ? "Edit Task" : "Add New Task"}</h2>{" "}
+         <form onSubmit={handleSubmit} className="task-form">
+            {/* Title Field  */}
+            <div className="form-group">
+               <label htmlFor="title">
+                  Title <span style={{ color: "red" }}>*</span>
+               </label>
+               <input
+                  type="text"
+                  id="title"
+                  value={title} // controlled input using state
+                  onChange={(e) => setTitle(e.target.value)} // update state on change
+                  placeholder="Enter task title"
+                  required // HTML5 validation
+               />
+            </div>
 
-         {/*  Description field*/}
-         <div className="form-group">
-            <label htmlFor="Description">Description </label>
-            <textarea
-               id="description"
-               value={description} // controlled input using state
-               onChange={(e) => setDescription(e.target.value)} // update state on change
-               placeholder="Enter task description"
-            />
-         </div>
+            {/*  Description field*/}
+            <div className="form-group">
+               <label htmlFor="Description">Description </label>
+               <textarea
+                  id="description"
+                  value={description} // controlled input using state
+                  onChange={(e) => setDescription(e.target.value)} // update state on change
+                  placeholder="Enter task description"
+               />
+            </div>
 
-         {/* Status Select */}
-         <div className="form-group">
-            <label htmlFor="status">Status</label>
-            <select
-               id="status"
-               value={status}
-               onChange={(e) => setStatus(e.target.value)}>
-               <option value="To Do">To Do</option>
-               <option value="In Progress">In Progress</option>
-               <option value="Done">Done</option>
-            </select>
-         </div>
+            {/* Status Select */}
+            <div className="form-group">
+               <label htmlFor="status">Status</label>
+               <select
+                  id="status"
+                  value={status}
+                  onChange={(e) => setStatus(e.target.value)}>
+                  <option value="To Do">To Do</option>
+                  <option value="In Progress">In Progress</option>
+                  <option value="Done">Done</option>
+               </select>
+            </div>
 
-         {/* PrioritySelect */}
-         <div className="form-group">
-            <label htmlFor="priority">Priority</label>
-            <select
-               id="priority"
-               value={priority}
-               onChange={(e) => setPriority(e.target.value)}>
-               <option value="Low">Low</option>
-               <option value="Medium">Medium</option>
-               <option value="High">High</option>
-            </select>
-         </div>
+            {/* PrioritySelect */}
+            <div className="form-group">
+               <label htmlFor="priority">Priority</label>
+               <select
+                  id="priority"
+                  value={priority}
+                  onChange={(e) => setPriority(e.target.value)}>
+                  <option value="Low">Low</option>
+                  <option value="Medium">Medium</option>
+                  <option value="High">High</option>
+               </select>
+            </div>
 
-         {/* Display an inline error message if the 'error' state contains a value
-          *Shows validation errors (e.g., empty project name)*/}
-         {error && <ErrorMessage message={error} />}
+            {/* Display an inline error message if the 'error' state contains a value
+             *Shows validation errors (e.g., empty project name)*/}
+            {error && <ErrorMessage message={error} />}
 
-         {/* Form Acion Buttons */}
+            {/* Form Acion Buttons */}
 
-         <div className="form-actions">
-            <button type="submit" disabled={isSubmitting}>
-               {task ? "Update Task" : "Create Task"}
-            </button>
-            <button type="button" onClick={onClose}>
-               Cancel
-            </button>
-         </div>
-      </form>
+            <div className="task-form-buttons">
+               <button type="submit" disabled={isSubmitting}>
+                  {task ? "Update Task" : "Create Task"}
+               </button>
+               <button type="button" onClick={onClose}>
+                  Cancel
+               </button>
+            </div>
+         </form>
+      </div>
    );
 }

@@ -92,8 +92,21 @@ export function useTasks(projectId: string, token: string) {
          );
 
          // Replace updated task in state
+         // setTasks((prev) =>
+         //    prev.map((task) => (task._id === taskId ? updatedTask : task)),
+         // setTasks((prevTasks) =>
+         //    prevTasks.map((task) =>
+         //       task.id === taskId ? { ...task, ...updatedTask } : task,
+         //    ),
+
+         // 2. Update state immediately
          setTasks((prev) =>
-            prev.map((task) => (task._id === taskId ? updatedTask : task)),
+            prev.map((task) =>
+               // If IDs match, merge the old task, the new body, and the API response
+               task._id === taskId
+                  ? { ...task, ...taskBody, ...updatedTask }
+                  : task,
+            ),
          );
 
          return updatedTask;
@@ -113,7 +126,7 @@ export function useTasks(projectId: string, token: string) {
          setLoading(true); // Start loading
          setError(""); // Reset previous errors
 
-         await deleteTask(projectId, taskId, token);
+         await deleteTask(taskId, token);
 
          // Remove deleted task from state
          setTasks((prev) => prev.filter((task) => task._id !== taskId));

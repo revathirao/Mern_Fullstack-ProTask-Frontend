@@ -6,6 +6,7 @@ import axios from "axios";
   - Having a BASE_URL makes it easier to maintain
 */
 const BASE_URL = `${import.meta.env.VITE_API_URL}/api/projects`;
+const BASE_URL_TASK = `${import.meta.env.VITE_API_URL}/api/tasks`; // for tasks (Delete nad Updat)
 
 /*
  * Fetch all tasks for a given project
@@ -87,15 +88,11 @@ export async function updateTask(
    try {
       if (!token) throw new Error("No auth token provided");
 
-      const response = await axios.put(
-         `${BASE_URL}/${projectId}/tasks/${taskId}`,
-         body,
-         {
-            headers: {
-               Authorization: `Bearer ${token}`,
-            },
+      const response = await axios.put(`${BASE_URL_TASK}/${taskId}`, body, {
+         headers: {
+            Authorization: `Bearer ${token}`,
          },
-      );
+      });
 
       return response.data;
    } catch (error: any) {
@@ -114,7 +111,7 @@ export async function updateTask(
  * @param token - Auth token
  */
 export async function deleteTask(
-   projectId: string,
+   // projectId: string,
    taskId: string,
    token: string,
 ) {
@@ -122,7 +119,9 @@ export async function deleteTask(
       if (!token) throw new Error("No auth token provided");
 
       const response = await axios.delete(
-         `${BASE_URL}/${projectId}/tasks/${taskId}`,
+         // `${BASE_URL}/tasks/${taskId}`,
+         `${BASE_URL_TASK}/${taskId}`,
+
          {
             headers: {
                Authorization: `Bearer ${token}`,

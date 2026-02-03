@@ -50,7 +50,11 @@ export default function TaskItem({ task, onEdit, onDelete }: TaskItemProps) {
             </button>
             <button
                className="delete-btn"
-               onClick={() => onDelete(task._id)}
+               // onClick={() => onDelete(task._id)}
+               onClick={() => {
+                  if (!task._id) return alert("Task ID missing!");
+                  onDelete(task._id);
+               }}
                title="Delete Task">
                🗑️
             </button>

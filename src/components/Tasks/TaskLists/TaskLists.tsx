@@ -98,6 +98,12 @@ export default function TaskList({ projectId }: TaskProps) {
     * Calls the hook's removeTask
     */
    const handleDelete = async (taskId: string) => {
+      console.log("Deleting taskId:", taskId, "projectId:", projectId);
+
+      const confirmed = window.confirm(
+         "Are you sure you want to delete this project?",
+      );
+      if (!confirmed) return; // Stop if user cancels
       try {
          await removeTask(taskId);
          setToastMessage("Task deleted successfully! 🗑️");

@@ -11,13 +11,14 @@ import {
    updateProject as updateProjectAction,
 } from "../../utils/projectUtils";
 import "./ProjectDetailPage.css";
-import TaskList from "../../components/Tasks/TaskLists/TaskLists";
+// import TaskList from "../../components/Tasks/TaskLists/TaskLists";
 
 /**
  * ProjectDetails Page
- * - View single project
+ * - View single project info
  * - Edit project
  * - Delete project
+ * - Navigates to tasks page
  */
 export default function ProjectDetails() {
    const { id } = useParams<{ id: string }>();
@@ -119,13 +120,19 @@ export default function ProjectDetails() {
                Delete
             </button>
 
+            <button
+               className="tasks-btn"
+               onClick={() => navigate(`/projects/${project._id}/tasks`)}>
+               View Tasks
+            </button>
+
             <button className="back-btn" onClick={() => navigate("/projects")}>
                Back
             </button>
          </div>
 
          {/* Edit Modal */}
-         {showEditModal && (
+         {/* {showEditModal && (
             <Modal onClose={() => setShowEditModal(false)}>
                <ProjectForm
                   editProject={project}
@@ -134,13 +141,13 @@ export default function ProjectDetails() {
                   onProjectUpdated={handleUpdate}
                />
             </Modal>
-         )}
+         )} */}
 
          {/* Task List */}
-         <div className="project-tasks-section">
+         {/* <div className="project-tasks-section">
             <h2>Tasks</h2>
             <TaskList projectId={project._id} />
-         </div>
+         </div> */}
       </div>
    );
 }
