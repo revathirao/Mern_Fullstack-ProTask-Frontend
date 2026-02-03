@@ -42,7 +42,9 @@ export function useProjects(token: string) {
          setError(""); // Reset previous errors
 
          const data = await fetchProjects(token);
-         setProjects(data); //save projects to state
+         //  setProjects(data); //save projects to state
+         // Ensure we store an array in state
+         setProjects(Array.isArray(data) ? data : data.projects || []);
       } catch (error: any) {
          setError(error.message || "Failed to load projects");
       } finally {
@@ -62,6 +64,7 @@ export function useProjects(token: string) {
          setError(""); // Reset previous errors
 
          const data = await fetchProjectById(token, projectId);
+         console.log("TOKEN:", token);
          setProjects([data]); //save projects to state
       } catch (error: any) {
          setError(error.message || "Failed to load project by Id");

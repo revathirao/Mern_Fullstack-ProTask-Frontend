@@ -1,168 +1,129 @@
-import { useContext, useState } from "react";
-import axios from "axios";
-import Spinner from "../../SharedComponents/Spinner/Spinner";
-import ErrorMessage from "../../SharedComponents/ErrorHandler/ErrorHandler";
-import ToastMessage from "../../SharedComponents/ToastMessage/ToastMessage";
-import { AuthContext } from "../../../context/authContext";
-import type { ProjectFormProps } from "../../../types/index";
+import { useEffect, useState } from "react";
+import type { ProjectFormProps } from "../../../types";
 import "./ProjectForm.css";
 
-/*
- ** ProjectForm Component
- **Purpose:
- * - Displays a form to create a new project
- * - Sends POST request to backend
- * - Calls onClose() after successful creation
- * - Calls onProjectCreated() to refresh project list
+/**
+ * ProjectForm
+ ** Pure UI component used for:
+ * - Creating a new project
+ * - Editing an existing project
+ *
+ * Responsibilities:
+ * - Manage local form fields only
+ * - Detect create vs edit mode
+ * - Call parent handlers (onCreate / onUpdate)
  */
 export default function ProjectForm({
    onClose,
    onProjectCreated,
-   isEdit,
    onProjectUpdated,
-   project,
+   // project,
+   editProject,
 }: ProjectFormProps) {
-   console.log("ProjectForm mounted"); // <<<<<<<<<<<<<<<< ADD THIS
-   console.log("ProjectForm props:", { project, isEdit });
-
-   // Local state for form fields
    const [name, setName] = useState("");
    const [description, setDescription] = useState("");
    const [status, setStatus] = useState("");
 
-   // State to store error messages
-   const [error, setError] = useState("");
+   // const [success, setSuccess] = useState(false);
 
-   // Track loading state to control Spinner visibility
-   const [isLoading, setIsLoading] = useState<boolean>(false);
+   /**
+    * Populate form when editing
+    * Clear form when creating
+    */
+   // useEffect(() => {
+   //    const source = editProject || project;
 
-   // Get token from AuthContext
-   const { token } = useContext(AuthContext);
-
-   const [success, setSuccess] = useState(false);
-   console.log("ProjectForm token:", token);
-   console.log("ProjectForm props:", { project, isEdit });
-   // Handle form submit
-   async function handleSubmit(e: React.FormEvent) {
-      e.preventDefault(); // Prevent default page reload
-      console.log("Form submitted"); // <-- add this
-
-      // Clear any previous error
-      setError("");
-
-      //Inline Validation
-      if (!name.trim()) {
-         setError("Project name is required");
-         return;
-      }
-      try {
-         // Make sure token exists
-         if (!token) return; //  use token directly
-
-         // Enable spinner before API call
-         setIsLoading(true);
-         console.log("Sending request...");
-
-         /*
-          *Axios POST request to backend
-          *- URL: your backend endpoint
-          *- body: project data (name + description)
-          *- headers: Authorization with JWT token
-          */
-         const res = await axios.post(
-            `${import.meta.env.VITE_API_URL}/api/projects`,
-            { name, description, status }, // request body
-            {
-               headers: {
-                  Authorization: `Bearer ${token}`, // send JWT
-               },
-            },
-         );
-
-         // Log response from backend
-         console.log("Project created:", res.data);
-
-         // Refresh projects in parent
-         // onProjectCreated();
-         // Pass the newly created project to parent
-         // onProjectCreated(res.data); // res.data = new project object
-
-         // Refresh parent depending on create or edit
-         if (isEdit) {
-            // Call update callback if editing
-            onProjectUpdated && onProjectUpdated(res.data);
-         } else {
-            // Call create callback if creating
-            onProjectCreated(res.data);
-         }
-
-         setSuccess(true);
-         setTimeout(() => setSuccess(false), 2500);
-
-         //Close the form
-         onClose();
-
-         // Clear form fields
+   //    if (source) {
+   //       setName(source.name ?? "");
+   //       setDescription(source.description ?? "");
+   //       setStatus(source.status ?? "Active");
+   //    } else {
+   //       setName("");
+   //       setDescription("");
+   //       setStatus("Active");
+   //    }
+   // }, [editProject, project]);
+   useEffect(() => {
+      if (editProject) {
+         setName(editProject.name ?? "");
+         setDescription(editProject.description ?? "");
+         setStatus(editProject.status ?? "Active");
+      } else {
          setName("");
          setDescription("");
-         setStatus("");
-      } catch (err: any) {
-         console.error(
-            "Error creating project:",
-            err.response?.data?.message || err.message,
-         );
-      } finally {
-         setIsLoading(false); //STOP loading
+         setStatus("Active");
       }
-   }
+   }, [editProject]);
 
-   // JSX for Project form
+   /**
+    * Handle submit
+    * - Create mode → onProjectCreated
+    * - Edit mode   → onProjectUpdated
+    */
+   const handleSubmit = (e: React.FormEvent) => {
+      e.preventDefault(); // Prevent default page reload
+      if (!name.trim()) return;
+      const payload = {
+         // ...(editProject || project), // preserve _id on edit
+         ...(editProject ?? {}),
+         name,
+         description,
+         status,
+      };
+
+      if (editProject && onProjectUpdated) {
+         onProjectUpdated(payload);
+      } else {
+         onProjectCreated(payload);
+      }
+
+      onClose();
+   };
+
    return (
-      //  Define the form element, attach the submission handle
-      <form onSubmit={handleSubmit} className="project-form">
-         {/* Header */}
-         <h2>Create Project</h2>
-         {/* Display an inline error message if the 'error' state contains a value
-          *Shows validation errors (e.g., empty project name)*/}
-         {error && <ErrorMessage message={error} />}
+      <form className="project-form" onSubmit={handleSubmit}>
+         <h2>{editProject ? "Edit Project" : "Create Project"}</h2>
+
          {/* ToastMessage:
           *-Shows success feedback after project creation
           *- Appears for a few seconds and disappears automatically*/}
-         {success && <ToastMessage message="Project created 🎉" />}
+         {/* {success && <ToastMessage message="Project created 🎉" />} */}
+
          {/* Project name input */}
          <input
             type="text"
-            placeholder="Project Name"
+            placeholder="Project name"
             value={name}
             onChange={(e) => setName(e.target.value)}
+            required
          />
+
          {/* Project description input */}
          <textarea
-            placeholder="Project Description"
+            placeholder="Project description"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             rows={4}
          />
+
          {/* Project status */}
          <select value={status} onChange={(e) => setStatus(e.target.value)}>
             <option value="Active">Active</option>
             <option value="Completed">Completed</option>
          </select>
-         {/* Submit button */}
-         <button type="submit" disabled={isLoading}>
-            {isLoading ? (
-               <>
-                  Loading...
-                  <Spinner />
-               </>
-            ) : (
-               "Create Project"
-            )}
-         </button>{" "}
-         {/* Cancel button uses onClose from parent */}
-         <button type="button" onClick={onClose}>
-            Cancel
-         </button>
+
+         <div className="actions">
+            {/* Submit button/ Update Button */}
+
+            <button type="submit" disabled={!name.trim()}>
+               {editProject ? "Update Project" : "Create Projesct"}
+            </button>
+
+            {/* Cancel button uses onClose from parent */}
+            <button type="button" onClick={onClose}>
+               Cancel
+            </button>
+         </div>
       </form>
    );
 }

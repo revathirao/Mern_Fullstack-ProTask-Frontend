@@ -1,14 +1,15 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useProjects } from "../../hooks/useProjects";
-
+import { AuthContext } from "../../context/authContext";
 import ProjectForm from "../../components/Projects/ProjectForm/ProjectForm";
 import Modal from "../../components/SharedComponents/Modal/Modal";
 import Spinner from "../../components/SharedComponents/Spinner/Spinner";
-import ErrorMessage from "../../components/SharedComponents/ErrorHandler/ErrorHandler";
 import ToastMessage from "../../components/SharedComponents/ToastMessage/ToastMessage";
-
-import { deleteProject, updateProject } from "../../utils/projectUtils";
+import {
+   deleteProject as deleteProjectAction,
+   updateProject as updateProjectAction,
+} from "../../utils/projectUtils";
 
 import "./ProjectDetailPage.css";
 
@@ -21,25 +22,22 @@ import "./ProjectDetailPage.css";
 export default function ProjectDetails() {
    const { id } = useParams<{ id: string }>();
    const navigate = useNavigate();
+   const { token } = useContext(AuthContext);
 
-   const {
-      projects,
-      loading,
-      error,
-      loadProjects,
-      editProject,
-      removeProject,
-   } = useProjects(localStorage.getItem("token") || "");
+   const { projects, loading, loadProjectId, editProject, removeProject } =
+      useProjects(token || "");
 
    const [project, setProject] = useState<any>(null);
    const [showEditModal, setShowEditModal] = useState(false);
    const [success, setSuccess] = useState("");
-   const [localError, setLocalError] = useState("");
+   // const [localError, setLocalError] = useState("");
 
    /* Load projects if not already loaded */
    useEffect(() => {
-      if (!projects.length) loadProjects();
-   }, []);
+      if (id) {
+         loadProjectId(id);
+      }
+   }, [id]);
 
    /* Find current project */
    useEffect(() => {
@@ -55,43 +53,39 @@ export default function ProjectDetails() {
       if (!confirmed) return;
 
       try {
-         await deleteProject(project._id, removeProject);
+         await deleteProjectAction(project._id, removeProject);
          setSuccess("Project deleted successfully 🎉");
          setTimeout(() => navigate("/projects"), 1500);
       } catch (err: any) {
-         setLocalError(err.message || "Failed to delete project");
+         setSuccess(""); // clear previous success
+         alert(err.message || "Failed to delete project"); // or toast error      }
       }
    };
 
    /* Update handler */
    const handleUpdate = async (updatedData: any) => {
       try {
-         const updated = await updateProject(
+         const updated = await updateProjectAction(
             project._id,
             updatedData,
             editProject,
          );
-         setProject(updated);
-         setShowEditModal(false);
-         setSuccess("Project updated successfully 🎉");
+         setProject(updated); // update local state
+         setShowEditModal(false); //close modal
+         setSuccess("Project updated successfully 🎉"); //show toast
+         // navigate after small delay
+         setTimeout(
+            () => navigate("/projects", { state: { refetch: true } }),
+            10000,
+         );
       } catch (err: any) {
-         setLocalError(err.message || "Failed to update project");
+         setSuccess(""); // clear previous success
+         alert(err.message || "Failed to delete project"); // or toast error         }
       }
    };
 
    /* Loading state */
    if (loading) return <Spinner />;
-
-   /* Error state */
-   if (error || localError)
-      return (
-         <div className="project-details-container">
-            <ErrorMessage message={error || localError} />
-            <button onClick={() => navigate("/projects")}>
-               Back to Projects
-            </button>
-         </div>
-      );
 
    if (!project) return null;
 
@@ -134,8 +128,7 @@ export default function ProjectDetails() {
          {showEditModal && (
             <Modal onClose={() => setShowEditModal(false)}>
                <ProjectForm
-                  project={project}
-                  isEdit
+                  editProject={project}
                   onClose={() => setShowEditModal(false)}
                   onProjectCreated={() => {}}
                   onProjectUpdated={handleUpdate}

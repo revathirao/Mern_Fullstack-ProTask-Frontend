@@ -25,3 +25,19 @@ export async function updateProject(
    if (!projectId) throw new Error("Project ID is required");
    return await editProject(projectId, updatedData);
 }
+
+/**
+ * Handle project creation
+ * @param projectBody - Data for the new project
+ * @param addProject - Function from useProjects hook to update local state
+ * @returns Newly created project
+ */
+export async function createProjectUtil(
+   projectBody: any,
+   addProject: (project: any) => Promise<any>,
+) {
+   if (!projectBody) throw new Error("Project data is required");
+
+   // Call the hook function to add the project
+   return await addProject(projectBody);
+}

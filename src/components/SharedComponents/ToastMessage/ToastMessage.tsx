@@ -10,8 +10,8 @@ export default function ToastMessage({
    type = "success",
 }: ToastMessageProps) {
    return (
-      <p className={`toast-message ${type}`} role="alert">
+      <div className={`toast-message ${type || "sucess"}`} role="alert">
          {message}
-      </p>
+      </div>
    );
 }

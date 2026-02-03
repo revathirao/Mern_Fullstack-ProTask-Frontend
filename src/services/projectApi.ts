@@ -127,14 +127,11 @@ export async function deleteProject(projectId: string, token: string) {
    try {
       if (!token) throw new Error("No auth token provided"); // Safety check
 
-      const response = await axios.delete(
-         `${import.meta.env.VITE_API_URL}/${projectId}`,
-         {
-            headers: {
-               Authorization: `Bearer ${token}`,
-            },
+      const response = await axios.delete(`${BASE_URL}/${projectId}`, {
+         headers: {
+            Authorization: `Bearer ${token}`,
          },
-      );
+      });
       console.log("Projects deleted successfully 🎉");
       return response.data;
    } catch (error: any) {

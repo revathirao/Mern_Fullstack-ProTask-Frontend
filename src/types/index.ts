@@ -27,9 +27,9 @@ export interface ProjectFormProps {
    // used when editing a project
    onProjectUpdated?: (project: any) => void;
    // project data when editing
-   project?: any;
+   // project?: any;
    // flag to distinguish create vs edit
-   isEdit?: boolean;
+   editProject?: any;
 }
 
 // Define the shape of a single Project object

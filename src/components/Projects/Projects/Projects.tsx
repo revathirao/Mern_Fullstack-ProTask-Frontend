@@ -1,171 +1,194 @@
 import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import { AuthContext } from "../../../context/authContext";
 import ProjectForm from "../ProjectForm/ProjectForm";
-import "./projects.css";
 import Modal from "../../SharedComponents/Modal/Modal";
 import ProjectCard from "../ProjectCard/ProjectCard";
+import Spinner from "../../SharedComponents/Spinner/Spinner";
+import ErrorMessage from "../../SharedComponents/ErrorHandler/ErrorHandler";
+import ToastMessage from "../../SharedComponents/ToastMessage/ToastMessage";
 
-/**Projects Page Component
-Purpose:
-- Displays all projects created by the logged-in user
-- Entry point for project management
-- Protected route (only accessible after login)
-- Controls ProjectForm visibility
-*/
+import { useProjects } from "../../../hooks/useProjects"; // Shared hook
+import {
+   deleteProject as deleteProjectAction,
+   createProjectUtil,
+   updateProject as updateProjectAction,
+} from "../../../utils/projectUtils"; // Util for deletion
+
+import "./projects.css";
+
+/**
+ * Projects Page Component
+ *
+ * Purpose:
+ * - Display all projects for the logged-in user
+ * - Create new projects using ProjectForm modal
+ * - Delete projects using ProjectCard buttons
+ * - Uses shared `useProjects` hook to sync state across pages
+ *
+ * @returns JSX.Element - The rendered Projects page
+ */
 export default function Projects() {
-   const [projects, setProjects] = useState<any[]>([]); // stores fetched projects
+   /** Get JWT token from context */
    const { token } = useContext(AuthContext);
+
+   if (!token) return <p>Please log in to view projects</p>;
+
+   /** Navigation function */
    const navigate = useNavigate();
 
-   // Toggle Project Form visibility
+   /** Hook provides projects, loading state, error, and actions */
+   const { projects, loading, error, loadProjects, addProject, removeProject } =
+      useProjects(token || "");
+
+   /** Modal visibility for ProjectForm */
    const [showForm, setShowForm] = useState(false);
 
+   /** Stores project selected for edit (optional) */
    const [editProject, setEditProject] = useState<any>(null);
 
-   // Define an asynchronous function to handle the API request and fetch projects from backend
-   async function fetchProjects() {
-      try {
-         // Exit early if no authentication token exists to prevent unauthorized errors
-         if (!token) return;
+   /** Success toast message */
+   const [success, setSuccess] = useState("");
 
-         // Send a GET request to the local server with the JWT in the Authorization header
-         const res = await axios.get(
-            `${import.meta.env.VITE_API_URL}/api/projects`,
-            {
-               headers: {
-                  Authorization: `Bearer ${token}`,
-               },
-            },
-         );
-         console.log("Fetched projects:", res.data);
-         // Update the component state with the array of projects returned from the server
-         // setProjects(res.data);
-         // setProjects(
-         //    Array.isArray(res.data) ? res.data : res.data.projects || [],
-         // );
+   const [project, setProject] = useState<any>(null);
+   const [localError, setLocalError] = useState("");
 
-         setProjects(
-            Array.isArray(res.data)
-               ? res.data
-               : Array.isArray(res.data.projects)
-                 ? res.data.projects
-                 : [],
-         );
-      } catch (err: any) {
-         // Log specific error messages from the server response or general network errors
-         console.error(
-            "Error fetching projects:",
-            err.response?.data?.message || err.message,
-         );
-      }
-   }
+   const handleCloseModal = () => {
+      setEditProject(null); // clear edit mode
+      setShowForm(false); // close modal
+   };
 
-   /*
-    *The following hook handles the side effect of retrieving project data
-    *from the backend whenever the user's authentication status changes.
+   /**
+    * Load projects when component mounts or token changes
     */
    useEffect(() => {
-      // Execute the fetch functio
-      fetchProjects();
-      // Re-run this effect only when the 'token' variable changes
+      if (token) loadProjects(); // Fetch projects from backend via hook
    }, [token]);
 
    /**
-    * Handles a newly created project
-    * Adds it to existing projects array
-    * Keeps state safe (array always)
+    * Callback after creating a project
+    * @param newProject - The newly created project
     */
-   // const handleProjectCreated = (newProject: any) => {
-   //    setProjects((prevProjects) => {
-   //       // Ensure previous state is an array
-   //       return [...prevProjects, newProject];
-   //    });
-   // };
-
-   const handleProjectCreated = (newProject: any) => {
-      setProjects((prevProjects) => {
-         // 🛡 Safety check
-         if (!Array.isArray(prevProjects)) {
-            return [newProject];
-         }
-         return [...prevProjects, newProject];
-      });
+   // Inside handleProjectCreated
+   const handleProjectCreated = async (projectBody: any) => {
+      try {
+         const newProject = await createProjectUtil(projectBody, addProject);
+         setSuccess("Project created successfully 🎉");
+         // Optionally do more with newProject
+      } catch (err) {
+         console.error(err);
+      }
    };
 
-   function deleteProject(id: string) {
-      console.log("Delete project:", id);
-   }
+   const handleUpdate = async (updatedData: any) => {
+      try {
+         const updated = await updateProjectAction(
+            project._id,
+            updatedData,
+            editProject,
+         );
+         setProject(updated); // update local state
+         setSuccess("Project updated successfully 🎉"); //show toast
+         // navigate after small delay
+         setTimeout(
+            () => navigate("/projects", { state: { refetch: true } }),
+            10000,
+         );
+      } catch (err: any) {
+         setLocalError(err.message || "Failed to update project");
+      }
+   };
 
+   /**
+    * Delete a project by ID
+    * Calls backend util and updates hook state
+    * @param id - Project _id to delete
+    */
+   const handleDelete = async (id: string) => {
+      const confirmed = window.confirm(
+         "Are you sure you want to delete this project?",
+      );
+      if (!confirmed) return; // Stop if user cancels
+
+      try {
+         await deleteProjectAction(id, removeProject); // Delete in backend + hook
+         setSuccess("Project deleted successfully 🎉"); // Show toast
+      } catch (err: any) {
+         console.error("Failed to delete project:", err); // Log errors
+      }
+   };
+
+   /** Show spinner while loading projects */
+   if (loading) return <Spinner />;
+
+   /** Show error message if fetch failed */
+   if (error) return <ErrorMessage message={error} />;
+
+   /* Error state */
+   if (error || localError)
+      return (
+         <div className="project-details-container">
+            <ErrorMessage message={error || localError} />
+            <button onClick={() => navigate("/projects")}>
+               Back to Projects
+            </button>
+         </div>
+      );
+
+   /** Main render */
    return (
       <div className="projects-pagecontainer">
-         <h1>Test Projects Page</h1>
-         {/* Header section: title + action */}
+         {/* Success toast */}
+         {success && <ToastMessage message={success} />}
+
+         {/* Header: title + create button */}
          <div className="projects-header">
             <div>
                <h1>Your Projects</h1>
                <p>Manage all your projects in one place</p>
             </div>
-
-            {/*  create button */}
             <button
                className="create-project-btn"
-               onClick={() => setShowForm(true)}>
+               onClick={() => setShowForm(true)} // Open modal
+            >
                Create Project
             </button>
          </div>
 
-         {/* Show Project Form */}
-         {/* {showForm && (
-            <ProjectForm
-               onClose={() => setShowForm(false)}
-               onProjectCreated={fetchProjects}
-            />
-         )} */}
-
-         {/* showForm controls modal visibility */}
+         {/* Modal for creating new project */}
          {showForm && (
             <Modal onClose={() => setShowForm(false)}>
-               {/*
-                **ProjectForm is wrapped inside Modal
-                *- onClose: closes the modal
-                *- onProjectCreated: updates parent project list
-                *- newProject is added to the top of projects array
-                */}
                <ProjectForm
-                  onClose={() => setShowForm(false)}
+                  // project={editProject} // Pass the project to edit
+                  // onClose={() => setShowForm(false)} // Close modal
+                  // onProjectCreated={handleProjectCreated} // Callback on create
+                  editProject={editProject} //  pass explicitly
+                  onClose={handleCloseModal}
                   onProjectCreated={handleProjectCreated}
-                  // (newProject) =>
-                  // setProjects((prev) => [newProject, ...prev])
-                  // }
+                  onProjectUpdated={handleUpdate}
                />
             </Modal>
          )}
 
-         {/* Project creation form */}
-         {/* <ProjectForm onProjectCreated={handleProjectCreated} /> */}
-
-         {/**Project list container*/}
+         {/* Project list */}
          <div className="projects-list">
             {projects.length === 0 ? (
-               <p>No projects yet. Create your first project!</p>
+               <p>No projects yet. Create your first project!</p> // Empty state
             ) : (
                <div className="project-items">
                   {/* Display fetched projects */}
                   {Array.isArray(projects) &&
                      projects.map((project) => (
-                        //    <div key={project._id} className="project-card">
-                        //       <h3>{project.name}</h3>
-                        //       <p>{project.description}</p>
-                        //    </div>
-                        // ))
                         <ProjectCard
                            key={project._id}
                            project={project}
                            onClick={(id) => navigate(`/projects/${id}`)}
-                           onEdit={(project) => setEditProject(project)}
-                           onDelete={(id) => deleteProject(id)}
+                           // onEdit={(project) => setEditProject(project)}
+                           onEdit={(project) => {
+                              setEditProject(project); // store project to edit
+                              setShowForm(true); // open modal
+                           }}
+                           onDelete={(id) => handleDelete(id)}
                         />
                      ))}
                </div>
