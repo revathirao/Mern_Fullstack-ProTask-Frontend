@@ -1,103 +1,108 @@
-import { useEffect, useState, useContext } from "react";
-import axios from "axios";
+import { useState, useContext } from "react";
 import { AuthContext } from "../../../context/authContext";
-import type { Task, TaskProps } from "../../../types";
 import TaskItem from "../TaskItem/TaskItem";
 import TaskForm from "../TaskForm/TaskForm";
-// import TaskRow from "./TaskRow";
-// import TaskForm from "./TaskForm";
+import { useTasks } from "../../../hooks/useTasks";
+import type { Task, TaskProps } from "../../../types";
+import "./TaskList.css";
 
+/**
+ * TaskList Component
+ * Displays all tasks for a project and allows creating new tasks.
+ * Uses `useTasks` hook for centralized task state & CRUD operations.
+ */
 export default function TaskList({ projectId }: TaskProps) {
    const { token } = useContext(AuthContext);
-   const [tasks, setTasks] = useState<Task[]>([]);
-   // State to store error messages
-   const [error, setError] = useState("");
 
-   // Track loading state to control Spinner visibility
-   const [isLoading, setIsLoading] = useState<boolean>(false);
+   if (!projectId || !token) return null;
 
-   useEffect(() => {
-      fetchTasks();
-   }, [projectId]);
+   // Hook managing tasks
+   const { tasks, loading, error, addTask, removeTask } = useTasks(
+      projectId,
+      token,
+   );
 
-   async function fetchTasks() {
+   // Show/hide the TaskForm for adding a new task
+   const [showForm, setShowForm] = useState(false);
+
+   // Optional: Show success messages
+   const [toastMessage, setToastMessage] = useState("");
+
+   /**
+    * Handle creating a new task
+    * Calls the hook's `addTask` and updates UI
+    */
+   async function handleCreateTask(taskBody: {
+      title: string;
+      description?: string;
+      status?: string;
+      priority?: string;
+   }) {
       try {
-         setIsLoading(true);
-         setError("");
-
-         const res = await axios.get(
-            ` ${import.meta.env.VITE_API_URL}/api/projects/${projectId}/tasks`,
-            {
-               headers: { Authorization: `Bearer ${token}` },
-            },
-         );
-         console.log("Fetched Tasks:", res.data);
-         setTasks(res.data);
-      } catch (err: any) {
-         // Log specific error messages from the server response or general network errors
-         console.error(
-            "Failed to fetch tasks:",
-            err.response?.data?.message || err.message,
-         );
-      } finally {
-         setIsLoading(false);
+         await addTask(taskBody); // Create task via hook
+         setToastMessage("Task added successfully! 🎉");
+         setShowForm(false); // Close form after creation
+      } catch (err) {
+         console.error("Failed to add task:", err);
       }
    }
 
+   /**
+    * Handle deleting a task
+    * Calls the hook's removeTask
+    */
    const handleDelete = async (taskId: string) => {
-      await axios.delete(
-         ` ${import.meta.env.VITE_API_URL}/api/projects/${projectId}/tasks/${taskId}`,
-         {
-            headers: { Authorization: `Bearer ${token}` },
-         },
-      );
-      setTasks((prev) => prev.filter((t) => t._id !== taskId));
+      try {
+         await removeTask(taskId);
+         setToastMessage("Task deleted successfully! 🗑️");
+      } catch (err) {
+         console.error("Failed to delete task:", err);
+      }
    };
 
-   function handleSave(savedTask: Task) {
-      setTasks((prev) => {
-         const exists = prev.find((t) => t._id === savedTask._id);
-         if (exists) {
-            return prev.map((t) => (t._id === savedTask._id ? savedTask : t));
-         }
-         return [...prev, savedTask];
-      });
-      setEditingTask(null);
-   }
-
-   if (isLoading) return <p>Loading tasks…</p>;
-
    return (
-      <div>
+      <div className="task-list">
+         <h3>Project Tasks</h3>
          <h3>Tasks</h3>
 
-         <TaskForm
-            projectId={projectId}
-            task={editingTask}
-            onSave={handleSave}
-            onCancel={() => setEditingTask(null)}
-         />
+         {/* Success / Toast message */}
+         {toastMessage && (
+            <div className="toast-message" onClick={() => setToastMessage("")}>
+               {toastMessage}
+            </div>
+         )}
 
-         <table>
-            <thead>
-               <tr>
-                  <th>Title</th>
-                  <th>Priority</th>
-                  <th>Status</th>
-                  <th />
-               </tr>
-            </thead>
-            <tbody>
-               {tasks.map((task) => (
-                  <TaskItem
-                     key={task._id}
-                     task={task}
-                     onEdit={setEditingTask}
-                     onDelete={handleDelete}
-                  />
-               ))}
-            </tbody>
-         </table>
+         {/* Toggle Add Task Form */}
+         <button onClick={() => setShowForm((prev) => !prev)}>
+            {showForm ? "Close Form" : "Add New Task"}
+         </button>
+
+         {/* Task Form for creating a new task */}
+         {showForm && (
+            <TaskForm
+               projectId={projectId}
+               onTaskCreated={handleCreateTask}
+               onClose={() => setShowForm(false)}
+            />
+         )}
+
+         {/* Loading and error states */}
+         {loading && <p>Loading tasks…</p>}
+         {error && <p className="error">{error}</p>}
+
+         {/* List of tasks */}
+         {tasks.length === 0 && !loading ? (
+            <p>No tasks found. Add your first task!</p>
+         ) : (
+            tasks.map((task: Task) => (
+               <TaskItem
+                  key={task._id}
+                  task={task}
+                  onEdit={() => {}}
+                  onDelete={handleDelete}
+               />
+            ))
+         )}
       </div>
    );
 }

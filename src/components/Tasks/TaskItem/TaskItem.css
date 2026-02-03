@@ -1,0 +1,73 @@
+.task-item {
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+   padding: 0.5rem;
+   border-bottom: 1px solid #eee;
+   background: #fff;
+   margin-bottom: 0.5rem;
+   border-radius: 4px;
+}
+
+.task-info {
+   flex: 2;
+}
+
+.task-meta {
+   flex: 1;
+   display: flex;
+   gap: 0.5rem;
+   justify-content: center;
+}
+
+.status {
+   padding: 0.2rem 0.5rem;
+   border-radius: 4px;
+   font-size: 0.9rem;
+   color: #fff;
+}
+
+.status.todo {
+   background: #2196f3;
+}
+.status.in-progress {
+   background: #ff9800;
+}
+.status.done {
+   background: #4caf50;
+}
+
+.priority {
+   padding: 0.2rem 0.5rem;
+   border-radius: 4px;
+   font-size: 0.9rem;
+   color: #fff;
+}
+
+.priority.low {
+   background: #9e9e9e;
+}
+.priority.medium {
+   background: #3f51b5;
+}
+.priority.high {
+   background: #f44336;
+}
+
+.task-actions button {
+   margin-left: 0.5rem;
+   padding: 0.3rem 0.6rem;
+   cursor: pointer;
+   border: none;
+   border-radius: 3px;
+   font-size: 0.8rem;
+}
+
+.task-actions .edit-btn {
+   background: #ff9800;
+   color: white;
+}
+.task-actions .delete-btn {
+   background: #f44336;
+   color: white;
+}
