@@ -19,14 +19,12 @@ import "./projects.css";
 
 /**
  * Projects Page Component
- *
- * Purpose:
+ * * Purpose:
  * - Display all projects for the logged-in user
  * - Create new projects using ProjectForm modal
  * - Delete projects using ProjectCard buttons
  * - Uses shared `useProjects` hook to sync state across pages
- *
- * @returns JSX.Element - The rendered Projects page
+ * * @returns JSX.Element - The rendered Projects page
  */
 export default function Projects() {
    /** Get JWT token from context */
@@ -58,28 +56,39 @@ export default function Projects() {
       setShowForm(false); // close modal
    };
 
-   // Assuming 'projects' is your array from state or hook
-   const totalProjects = projects.length;
-   const activeProjects = projects.filter((p) => !p.completed).length; // example
-   const completedProjects = projects.filter((p) => p.completed).length;
-
    /**
-    * Load projects when component mounts or token changes
+    * Summary Statistics calculation
+    * Note: These calculations depend on the 'status' field returned by the API.
+    * The backend uses string values "Active" and "Completed".
     */
+   //  Total Projects: The length of the entire projects array
+   const totalProjects = projects.length;
+
+   //  Active Projects: Filter projects where status matches exactly "Active"
+   const activeProjects = projects.filter((p) => p.status === "Active").length;
+
+   // Completed Projects: Filter projects where status matches exactly "Completed"
+   const completedProjects = projects.filter(
+      (p) => p.status === "Completed",
+   ).length;
+
+   / * Load projects when component mounts or token changes*/;
    useEffect(() => {
       if (token) loadProjects(); // Fetch projects from backend via hook
    }, [token]);
 
    /**
+    * handleProjectCreated
     * Callback after creating a project
     * @param newProject - The newly created project
     */
-   // Inside handleProjectCreated
    const handleProjectCreated = async (projectBody: any) => {
       try {
          await createProjectUtil(projectBody, addProject);
          setSuccess("Project created successfully 🎉");
-         // Optionally do more with newProject
+         setShowForm(false);
+         // Clear it after 3 seconds without needing useEffect
+         setTimeout(() => setSuccess(""), 3000);
       } catch (err) {
          console.error(err);
       }
@@ -97,7 +106,7 @@ export default function Projects() {
          // navigate after small delay
          setTimeout(
             () => navigate("/projects", { state: { refetch: true } }),
-            10000,
+            5000,
          );
       } catch (err: any) {
          setLocalError(err.message || "Failed to update project");
@@ -148,8 +157,8 @@ export default function Projects() {
 
          {/* Header: title + create button */}
          <div className="projects-header">
-            <div>
-               <h1>Your Projects</h1>
+            <div className="page-header">
+               <h1>My Projects</h1>
                <p>Manage all your projects in one place</p>
             </div>
             <button
@@ -160,44 +169,24 @@ export default function Projects() {
             </button>
          </div>
 
-         {/* <div className="project-list-page"> */}
-         {/* Stats at the top */}
-         {/* <div className="project-stats-top">
-               <div className="stat-card">
-                  <div className="stat-number">{totalProjects}</div>
-                  <div className="stat-label">Total Projects</div>
-               </div>
-               <div className="stat-card">
-                  <div className="stat-number">{activeProjects}</div>
-                  <div className="stat-label">Active Projects</div>
-               </div>
-               <div className="stat-card">
-                  <div className="stat-number">{completedProjects}</div>
-                  <div className="stat-label">Completed Projects</div>
-               </div>
+         {/* Stats Section */}
+         <div className="project-stats-top">
+            <div className="stat-card total">
+               <div className="stat-icon">📁</div>
+               <div className="stat-number">{totalProjects}</div>
+               <div className="stat-label">Total Projects</div>
             </div>
-         </div> */}
 
-         <div className="project-list-page">
-            {/* Stats Section */}
-            <div className="project-stats-top">
-               <div className="stat-card total">
-                  <div className="stat-icon">📁</div>
-                  <div className="stat-number">{totalProjects}</div>
-                  <div className="stat-label">Total Projects</div>
-               </div>
+            <div className="stat-card active">
+               <div className="stat-icon">🚀</div>
+               <div className="stat-number">{activeProjects}</div>
+               <div className="stat-label">Active Projects</div>
+            </div>
 
-               <div className="stat-card active">
-                  <div className="stat-icon">🚀</div>
-                  <div className="stat-number">{activeProjects}</div>
-                  <div className="stat-label">Active Projects</div>
-               </div>
-
-               <div className="stat-card completed">
-                  <div className="stat-icon">✅</div>
-                  <div className="stat-number">{completedProjects}</div>
-                  <div className="stat-label">Completed Projects</div>
-               </div>
+            <div className="stat-card completed">
+               <div className="stat-icon">✅</div>
+               <div className="stat-number">{completedProjects}</div>
+               <div className="stat-label">Completed Projects</div>
             </div>
          </div>
 
@@ -205,12 +194,9 @@ export default function Projects() {
          {showForm && (
             <Modal onClose={() => setShowForm(false)}>
                <ProjectForm
-                  // project={editProject} // Pass the project to edit
-                  // onClose={() => setShowForm(false)} // Close modal
-                  // onProjectCreated={handleProjectCreated} // Callback on create
                   editProject={editProject} //  pass explicitly
-                  onClose={handleCloseModal}
-                  onProjectCreated={handleProjectCreated}
+                  onClose={handleCloseModal} // Close modal
+                  onProjectCreated={handleProjectCreated} // Callback on create
                   onProjectUpdated={handleUpdate}
                />
             </Modal>
@@ -229,7 +215,6 @@ export default function Projects() {
                            key={project._id}
                            project={project}
                            onClick={(id) => navigate(`/projects/${id}`)}
-                           // onEdit={(project) => setEditProject(project)}
                            onEdit={(project) => {
                               setEditProject(project); // store project to edit
                               setShowForm(true); // open modal

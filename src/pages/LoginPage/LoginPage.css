@@ -1,4 +1,14 @@
+/* Full-page background */
+.login-page {
+   min-height: 100vh; /* full height of the viewport */
+   background-color: lightgrey;
+   display: flex;
+   justify-content: center; /* center horizontally */
+   align-items: center; /* center vertically */
+}
+
 .login-container {
+   background-color: white;
    max-width: 400px;
    margin: 50px auto;
    padding: 20px;
@@ -14,26 +24,35 @@
 }
 
 .login-container input {
-   width: 100%;
-   padding: 8px;
+   width: 100%; /* full width of container */
+   padding: 10px 12px; /* add padding inside input (top/bottom 10px, left/right 12px) */
    margin-top: 5px;
    margin-bottom: 15px;
    border: 1px solid #ccc;
    border-radius: 4px;
+   box-sizing: border-box; /* include padding in width calculation */
 }
 
-.login-container button {
-   width: 100%;
-   padding: 10px;
+.login-btn {
+   width: 100%; /* full width of container */
+   padding: 12px;
    background-color: #007bff;
    color: white;
+   font-size: 16px;
+   font-weight: bold;
    border: none;
-   border-radius: 4px;
-   cursor: pointer;
+   border-radius: 6px;
+   cursor: pointer; /* pointer on hover */
+   transition: background 0.3s; /* smooth hover effect */
 }
 
 .login-container button:hover {
    background-color: #0056b3;
+}
+
+.login-btn:focus {
+   outline: none; /* remove default focus outline */
+   box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.4); /* subtle focus ring */
 }
 
 .login-container p {

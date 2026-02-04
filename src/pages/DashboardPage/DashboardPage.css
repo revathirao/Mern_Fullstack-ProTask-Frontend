@@ -6,7 +6,7 @@ body,
    width: 100%;
    margin: 0;
    padding: 0;
-   /* overflow: hidden; Prevent horizontal scrolling */
+   overflow: hidden; /* Prevent horizontal scrolling */
    font-family: Arial, sans-serif;
 }
 
@@ -20,7 +20,6 @@ body,
    align-items: center; /* Center horizontally */
    background: url("https://picsum.photos/1920/1080?blur=3") no-repeat center
       center;
-   /* background: linear-gradient(to right, #f7f9fc, #eef2f7); */
    background-size: cover; /* Cover entire page */
    color: #fff; /* White text for visibility */
    text-align: center;
@@ -60,7 +59,7 @@ body,
    transform: translateY(-2px);
 }
 
-/* Logout button */
+/*  button */
 .dashboard-container button {
    padding: 1rem 2rem;
    background-color: rgba(0, 123, 255, 0.8);

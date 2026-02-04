@@ -7,8 +7,7 @@ import "./ProjectForm.css";
  ** Pure UI component used for:
  * - Creating a new project
  * - Editing an existing project
- *
- * Responsibilities:
+ * * Responsibilities:
  * - Manage local form fields only
  * - Detect create vs edit mode
  * - Call parent handlers (onCreate / onUpdate)
@@ -23,6 +22,10 @@ export default function ProjectForm({
    const [description, setDescription] = useState("");
    const [status, setStatus] = useState("");
 
+   /**
+    * Synchronizes form fields when switching between Creating and Editing.
+    * Populates data if editProject is provided; otherwise, resets to defaults.
+    */
    useEffect(() => {
       if (editProject) {
          setName(editProject.name ?? "");
@@ -44,10 +47,9 @@ export default function ProjectForm({
       e.preventDefault(); // Prevent default page reload
       if (!name.trim()) return;
       const payload = {
-         // ...(editProject || project), // preserve _id on edit
-         ...(editProject ?? {}),
-         name,
-         description,
+         ...(editProject ?? {}), // Preserve original fields (like _id) if editing
+         name, // Update with form value
+         description, // Update with form value
          status,
       };
 
@@ -56,18 +58,12 @@ export default function ProjectForm({
       } else {
          onProjectCreated(payload);
       }
-
       onClose();
    };
 
    return (
       <form className="project-form" onSubmit={handleSubmit}>
          <h2>{editProject ? "Edit Project" : "Create Project"}</h2>
-
-         {/* ToastMessage:
-          *-Shows success feedback after project creation
-          *- Appears for a few seconds and disappears automatically*/}
-         {/* {success && <ToastMessage message="Project created 🎉" />} */}
 
          {/* Project name input */}
          <input
@@ -94,7 +90,6 @@ export default function ProjectForm({
 
          <div className="actions">
             {/* Submit button/ Update Button */}
-
             <button type="submit" disabled={!name.trim()}>
                {editProject ? "Update Project" : "Create Projesct"}
             </button>

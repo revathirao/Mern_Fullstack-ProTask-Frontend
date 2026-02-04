@@ -42,15 +42,10 @@
    flex-direction: column;
    justify-content: space-between;
    align-items: stretch; /* make card content stretch full width */
-   /* align-items: center; */
    /* Hover animation */
    transition: box-shadow 0.3s ease;
    gap: 12px; /* spacing between content and buttons */
 }
-
-/* .project-card {
-   outline: 2px solid red;
-} */
 
 .project-card:hover {
    transform: translateY(-4px);
@@ -60,6 +55,8 @@
 .project-content h3 {
    margin: 0;
    font-size: 1.1rem;
+   color: #111827;
+   margin-bottom: 0.5rem;
 }
 
 .project-content p {
@@ -79,12 +76,14 @@
 
 .status.active {
    background-color: #e0f7e9;
-   color: #1b8f4b;
+   color: #ffffff;
+   border-radius: 10px;
 }
 
 .status.completed {
    background-color: #e8eaf6;
-   color: #3f51b5;
+   color: #ffffff;
+   border-radius: 10px;
 }
 
 /* Action buttons */
@@ -92,7 +91,6 @@
    display: flex;
    gap: 8px;
    margin-left: 8px;
-   /* border: 1px solid red; */
 }
 
 .edit-btn,

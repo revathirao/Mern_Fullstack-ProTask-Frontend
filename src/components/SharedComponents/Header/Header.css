@@ -60,7 +60,7 @@
    font-size: 1.5rem;
 }
 
-.logout-button {
+.logout-btn {
    padding: 1rem 0.8rem;
    cursor: pointer;
    border-radius: 4px;
@@ -68,4 +68,39 @@
    background-color: #ff4d4f;
    color: white;
    font-weight: bold;
+   transition: all 0.3s ease;
+}
+
+.logout-btn button:hover {
+   background-color: rgba(0, 86, 179, 0.9);
+}
+
+@media (max-width: 768px) {
+   .header {
+      height: auto; /* expand vertically */
+      flex-direction: column; /* Stack logo, nav, and user */
+      padding: 1rem;
+      gap: 1rem;
+   }
+
+   .nav-links {
+      gap: 1rem;
+      flex-wrap: wrap; /* Prevent links from cutting off */
+      justify-content: center;
+   }
+
+   .logo-text {
+      font-size: 1.8rem; /* Shrink logo slightly */
+   }
+
+   .user-container {
+      width: 100%;
+      justify-content: center; /* Center logout area */
+      border-top: 1px solid #ddd;
+      padding-top: 0.5rem;
+   }
+
+   .user-name {
+      font-size: 1.2rem;
+   }
 }

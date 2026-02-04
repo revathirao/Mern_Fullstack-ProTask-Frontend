@@ -1,4 +1,14 @@
+/* Full-page background */
+.register-page {
+   min-height: 100vh; /* full height of the viewport */
+   background-color: lightgrey;
+   display: flex;
+   justify-content: center; /* center horizontally */
+   align-items: center; /* center vertically */
+}
+
 .register-container {
+   background-color: white;
    max-width: 400px;
    margin: 50px auto;
    padding: 30px;

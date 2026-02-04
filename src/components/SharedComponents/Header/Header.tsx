@@ -46,7 +46,9 @@ export default function Header() {
          <div className="user-container">
             <span className="user-name">Hello, User!</span>
             {/* Logout button */}
-            <button onClick={logout}>Logout</button>{" "}
+            <button className="logout-btn" onClick={logout}>
+               Logout
+            </button>{" "}
          </div>
       </header>
    );

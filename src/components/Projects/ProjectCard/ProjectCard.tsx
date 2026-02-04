@@ -1,6 +1,6 @@
-// import ProjectForm from "../ProjectForm/ProjectForm";
 import type { ProjectCardProps } from "../../../types/index";
 import "./ProjectCard.css";
+
 /**
  * ProjectCard Component
  *  * A functional React component that displays a summary of a project's details.
@@ -21,12 +21,10 @@ export default function ProjectCard({
       <div
          className="project-card fade-in" // Applies CSS classes for styling and entry animation
          onClick={() => onClick(project._id)}>
-         {/* // onClick={() => console.log("CARD CLICKED", project._id)}> */}
          {/* Project Info */}
          <div className="project-content">
             <h3>{project.name}</h3>
             <p>{project.description}</p>
-            {/* <span className="status">{project.status}</span> */}
             <span className={`status ${project.status?.toLowerCase()}`}>
                {project.status}
             </span>

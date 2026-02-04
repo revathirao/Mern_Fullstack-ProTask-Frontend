@@ -3,15 +3,15 @@ import { AuthContext } from "../../context/authContext"; // Import AuthContext t
 import { useNavigate } from "react-router-dom"; // Hook for redirecting after loginconst { login } = useContext(AuthContext);
 import { Link } from "react-router-dom";
 import "./LoginPage.css";
+
 /**
  * Login Component
  * Displays a login form that allows users to log in using their email and password.
  * Connects to AuthContext to handle authentication and store user/token.
  */
 export default function Login() {
-   // return <h1>Blog Index Works</h1>;//To check the page initially  // Get the login function from AuthContext
-   // Get the login function from AuthContext
-   //useState() → stores email, password, and error locally
+   /* Get the login function from AuthContext
+    *useState() → stores email, password, and error locally*/
    const { login } = useContext(AuthContext); // Destructure login function from context
    const navigate = useNavigate(); // Hook for redirecting to another route
    const [email, setEmail] = useState(""); // Controlled input for email
@@ -50,62 +50,60 @@ export default function Login() {
 
    // JSX for login form
    return (
-      <div
-         className="login-container"
-         style={{
-            maxWidth: "400px",
-            margin: "50px auto",
-            padding: "20px",
-            border: "1px solid #ccc",
-            borderRadius: "8px",
-         }}>
-         {/* Page title */}
-         <h2>Login</h2>
+      <div className="login-page">
+         <div className="login-container">
+            {/* Page title */}
+            <h2>Login</h2>
 
-         {/* Form */}
-         <form
-            onSubmit={handleSubmit}
-            style={{ display: "flex", flexDirection: "column", gap: "15px" }}>
-            {/* Display error message if any */}
-            {error && <div style={{ color: "red" }}>{error}</div>}
+            {/* Form */}
+            <form
+               onSubmit={handleSubmit}
+               style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "15px",
+               }}>
+               {/* Display error message if any */}
+               {error && <div style={{ color: "red" }}>{error}</div>}
 
-            {/* Email input */}
-            <div>
-               <label>Email:</label>
-               <input
-                  type="email"
-                  value={email} // Bind state to input
-                  onChange={(e) => setEmail(e.target.value)} // Update state on change
-                  required
-                  placeholder="you@example.com"
-               />
-            </div>
+               {/* Email input */}
+               <div>
+                  <label>Email:</label>
+                  <input
+                     type="email"
+                     value={email} // Bind state to input
+                     onChange={(e) => setEmail(e.target.value)} // Update state on change
+                     required
+                     placeholder="you@example.com"
+                  />
+               </div>
 
-            {/* Password input */}
-            <div>
-               <label>Password:</label>
-               <input
-                  type="password"
-                  value={password} // Bind state to input
-                  onChange={(e) => setPassword(e.target.value)} // Update state on change
-                  required
-                  placeholder="Enter password"
-               />
-            </div>
+               {/* Password input */}
+               <div>
+                  <label>Password:</label>
+                  <input
+                     type="password"
+                     value={password} // Bind state to input
+                     onChange={(e) => setPassword(e.target.value)} // Update state on change
+                     required
+                     placeholder="Enter password"
+                  />
+               </div>
 
-            {/* Submit button */}
-            <button type="submit">Login</button>
+               {/* Submit button */}
+               <button className="login-btn" type="submit">Login</button>
 
-            {/* Link to registration page */}
-            <p style={{ marginTop: "10px" }}>
-               Don’t have an account?{" "}
-               <Link
-                  to="/register"
-                  style={{ color: "blue", textDecoration: "underline" }}>
-                  Register here
-               </Link>
-            </p>
-         </form>
+               {/* Link to registration page */}
+               <p style={{ marginTop: "10px" }}>
+                  Don’t have an account?{" "}
+                  <Link
+                     to="/register"
+                     style={{ color: "blue", textDecoration: "underline" }}>
+                     Register here
+                  </Link>
+               </p>
+            </form>
+         </div>
       </div>
    );
 }

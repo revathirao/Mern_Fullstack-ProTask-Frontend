@@ -6,6 +6,7 @@ import type { RegisterCredentials } from "../../types";
 import { AuthContext } from "../../context/authContext";
 import { useNavigate, Link } from "react-router-dom";
 import "./RegisterPage.css";
+
 /**
  * Register Page
  ** Allows a new user to create an account.
@@ -25,6 +26,7 @@ export default function Register(): JSX.Element {
 
    // State to store error messages
    const [error, setError] = useState<string>();
+
    // Track loading state to control Spinner visibility
    const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -73,6 +75,7 @@ export default function Register(): JSX.Element {
          // Call register from AuthContext
          await register({ email, password, username });
          alert("Registration successful! Please log in.");
+
          // Navigate to login page
          navigate("/login");
       } catch (err: any) {
@@ -89,55 +92,57 @@ export default function Register(): JSX.Element {
    }
 
    return (
-      <div className="register-container">
-         <h2>Create Account</h2>
+      <div className="register-page">
+         <div className="register-container">
+            <h2>Create Account</h2>
 
-         {/* Render error message */}
-         {error && <ErrorMessage message={error} />}
+            {/* Render error message */}
+            {error && <ErrorMessage message={error} />}
 
-         <form onSubmit={handleSubmit}>
-            <input
-               type="text"
-               name="username"
-               placeholder="Username (optional)"
-               value={username}
-               onChange={handleChange}
-            />
+            <form onSubmit={handleSubmit}>
+               <input
+                  type="text"
+                  name="username"
+                  placeholder="Username (optional)"
+                  value={username}
+                  onChange={handleChange}
+               />
 
-            <input
-               type="email"
-               name="email"
-               placeholder="Email"
-               value={email}
-               onChange={handleChange}
-               required
-            />
+               <input
+                  type="email"
+                  name="email"
+                  placeholder="Email"
+                  value={email}
+                  onChange={handleChange}
+                  required
+               />
 
-            <input
-               type="password"
-               name="password"
-               placeholder="Password (min 6 characters)"
-               value={password}
-               onChange={handleChange}
-               required
-            />
+               <input
+                  type="password"
+                  name="password"
+                  placeholder="Password (min 6 characters)"
+                  value={password}
+                  onChange={handleChange}
+                  required
+               />
 
-            {/* Submit button */}
-            <button type="submit" disabled={isLoading}>
-               {isLoading ? "Registering..." : "Register"}
-            </button>
+               {/* Submit button */}
+               <button type="submit" disabled={isLoading}>
+                  {isLoading ? "Registering..." : "Register"}
+               </button>
 
-            <div className="login-link">
-               Already have an account? <Link to="/login">Login</Link>{" "}
-            </div>
-         </form>
+               <div className="login-link">
+                  Already have an account? <Link to="/login">Login</Link>{" "}
+               </div>
+            </form>
 
-         {/* Spinner component is clearly and separately rendered */}
-         {isLoading && (
-            <div style={{ marginTop: "12px", textAlign: "center" }}>
-               <Spinner />
-            </div>
-         )}
+            {/* Spinner component is clearly and separately rendered */}
+            {isLoading && (
+               <div style={{ marginTop: "12px", textAlign: "center" }}>
+                  <Spinner />
+               </div>
+            )}
+         </div>
       </div>
    );
 }
