@@ -58,6 +58,11 @@ export default function Projects() {
       setShowForm(false); // close modal
    };
 
+   // Assuming 'projects' is your array from state or hook
+   const totalProjects = projects.length;
+   const activeProjects = projects.filter((p) => !p.completed).length; // example
+   const completedProjects = projects.filter((p) => p.completed).length;
+
    /**
     * Load projects when component mounts or token changes
     */
@@ -153,6 +158,47 @@ export default function Projects() {
             >
                Create Project
             </button>
+         </div>
+
+         {/* <div className="project-list-page"> */}
+         {/* Stats at the top */}
+         {/* <div className="project-stats-top">
+               <div className="stat-card">
+                  <div className="stat-number">{totalProjects}</div>
+                  <div className="stat-label">Total Projects</div>
+               </div>
+               <div className="stat-card">
+                  <div className="stat-number">{activeProjects}</div>
+                  <div className="stat-label">Active Projects</div>
+               </div>
+               <div className="stat-card">
+                  <div className="stat-number">{completedProjects}</div>
+                  <div className="stat-label">Completed Projects</div>
+               </div>
+            </div>
+         </div> */}
+
+         <div className="project-list-page">
+            {/* Stats Section */}
+            <div className="project-stats-top">
+               <div className="stat-card total">
+                  <div className="stat-icon">📁</div>
+                  <div className="stat-number">{totalProjects}</div>
+                  <div className="stat-label">Total Projects</div>
+               </div>
+
+               <div className="stat-card active">
+                  <div className="stat-icon">🚀</div>
+                  <div className="stat-number">{activeProjects}</div>
+                  <div className="stat-label">Active Projects</div>
+               </div>
+
+               <div className="stat-card completed">
+                  <div className="stat-icon">✅</div>
+                  <div className="stat-number">{completedProjects}</div>
+                  <div className="stat-label">Completed Projects</div>
+               </div>
+            </div>
          </div>
 
          {/* Modal for creating new project */}

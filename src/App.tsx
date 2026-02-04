@@ -11,6 +11,7 @@ import { AuthContext } from "./context/authContext.tsx";
 import { useContext } from "react";
 import ProjectDetails from "./pages/ProjectDetailPage/ProjectDetailPage.tsx";
 import TasksPage from "./pages/TasksPage/TaskPage.tsx";
+import Homepage from "./pages/HomePage/HomePage.tsx";
 
 /*- Dashboard and Projects are protected
 - User must be logged in to access them
@@ -26,7 +27,7 @@ function App() {
          {/* <h1>Pro-Tasker</h1>
          <p>Frontend initialized successfully</p> */}
          <Routes>
-            <Route path="/" element={<Navigate to="/login" />} />
+            <Route path="/" element={<Homepage />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
 
