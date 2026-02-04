@@ -1,22 +1,25 @@
 import { NavLink } from "react-router-dom";
+import { useContext } from "react";
+import { AuthContext } from "../../../context/authContext";
 import "./Header.css";
 
 /**
  * Header Component
- ** - Uniform header visible on all pages
+ ** -Uniform header visible on all pages
  * - Logo / App Name
  * - Navigation links (Dashboard, Projects, Logout)
  * - Navigation links highlight the active page using NavLink
  * - User info  + Logout button
  */
-
 export default function Header() {
+   const { logout } = useContext(AuthContext); // Get current user and logout function from AuthContext
+
    return (
       <header className="header">
          {/* Left: Logo */}
          <div className="logo-container">
             <NavLink to="/dashboard" className="logo-text">
-               Pro-Tasker
+               <b>Pro-Tasker</b>
             </NavLink>
          </div>
 
@@ -29,6 +32,7 @@ export default function Header() {
                }>
                Dashboard
             </NavLink>
+
             <NavLink
                to="/projects"
                className={({ isActive }) =>
@@ -36,17 +40,13 @@ export default function Header() {
                }>
                Projects
             </NavLink>
-            {/* Add more nav links here if needed */}
          </nav>
 
          {/* Right: User info + Logout */}
          <div className="user-container">
             <span className="user-name">Hello, User!</span>
-            <button
-               className="logout-button"
-               onClick={() => alert("Logout clicked")}>
-               Logout
-            </button>
+            {/* Logout button */}
+            <button onClick={logout}>Logout</button>{" "}
          </div>
       </header>
    );
