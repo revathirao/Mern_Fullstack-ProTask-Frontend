@@ -11,7 +11,6 @@ import {
    updateProject as updateProjectAction,
 } from "../../utils/projectUtils";
 import "./ProjectDetailPage.css";
-// import TaskList from "../../components/Tasks/TaskLists/TaskLists";
 
 /**
  * ProjectDetails Page
@@ -31,7 +30,6 @@ export default function ProjectDetails() {
    const [project, setProject] = useState<any>(null);
    const [showEditModal, setShowEditModal] = useState(false);
    const [success, setSuccess] = useState("");
-   // const [localError, setLocalError] = useState("");
 
    /* Load projects if not already loaded */
    useEffect(() => {
@@ -59,7 +57,7 @@ export default function ProjectDetails() {
          setTimeout(() => navigate("/projects"), 1500);
       } catch (err: any) {
          setSuccess(""); // clear previous success
-         alert(err.message || "Failed to delete project"); // or toast error      }
+         alert(err.message || "Failed to delete project"); // or toast error
       }
    };
 
@@ -142,12 +140,6 @@ export default function ProjectDetails() {
                />
             </Modal>
          )}
-
-         {/* Task List */}
-         {/* <div className="project-tasks-section">
-            <h2>Tasks</h2>
-            <TaskList projectId={project._id} />
-         </div> */}
       </div>
    );
 }

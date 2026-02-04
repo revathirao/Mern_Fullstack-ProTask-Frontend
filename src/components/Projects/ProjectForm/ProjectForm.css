@@ -36,24 +36,25 @@
 /* Text input & textarea */
 .project-form input,
 .project-form textarea,
-select {
+.project-form select {
    width: 100%;
    padding: 12px 14px;
    font-size: 1rem;
    border: 1px solid #d1d5db;
    border-radius: 8px;
    outline: none;
-   transition:
-      border-color 0.2s,
-      box-shadow 0.2s;
+   color: #111827;
 }
 
 /* Dull / muted placeholder text */
 .project-form input::placeholder,
 .project-form textarea::placeholder {
    color: #b0b7c3;
-   opacity: 1; /* keeps color consistent across browsers */
-   font-size: 0.95rem; /* slightly smaller than input text */
+   font-size: 0.95rem;
+}
+
+input:-webkit-autofill {
+   -webkit-text-fill-color: #111827 !important;
 }
 
 /* Focus effect */

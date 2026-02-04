@@ -14,7 +14,7 @@ export default function TasksPage() {
 
    if (!projectId || !token) return null;
 
-   const { tasks, loading, error, addTask, editTask, removeTask, loadTasks } =
+   const { tasks, loading, addTask, editTask, removeTask, loadTasks } =
       useTasks(projectId, token);
 
    const [searchTerm, setSearchTerm] = useState("");

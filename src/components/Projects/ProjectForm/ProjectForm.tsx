@@ -79,8 +79,7 @@ export default function ProjectForm({
             placeholder="Project description"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            rows={4}
-         />
+            rows={4}></textarea>
 
          {/* Project status */}
          <select value={status} onChange={(e) => setStatus(e.target.value)}>

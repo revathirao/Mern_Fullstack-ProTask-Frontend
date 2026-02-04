@@ -43,7 +43,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
    /**
     * Sync JWT token with Axios default headers.
-    ** Whenever the token changes:
+    **Whenever the token changes:
     * - If token exists → attach it to Authorization header
     * - If token is removed → delete Authorization header
     ** This ensures ALL axios requests automatically include the token.
@@ -82,7 +82,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
    /**
     * register
-    * * Called when a new user signs up.
+    ** Called when a new user signs up.
     * Sends username, email, and password to the backend.
     ** Many APIs automatically log the user in after registration,
     * so we reuse the same response structure.

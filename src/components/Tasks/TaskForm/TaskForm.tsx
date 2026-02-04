@@ -2,6 +2,7 @@ import { useState } from "react";
 import type { TaskFormProps } from "../../../types";
 import ErrorMessage from "../../SharedComponents/ErrorHandler/ErrorHandler";
 import "./TaskForm.css";
+
 /**
  * TaskForm Component
  * Handles both creating a new task and editing an existing task.
@@ -16,7 +17,7 @@ export default function TaskForm({
    const [title, setTitle] = useState(task?.title || "");
    const [description, setDescription] = useState(task?.description || "");
    const [status, setStatus] = useState(task?.status || "To Do");
-   const [priority, setPriority] = useState(task?.priority || "Medium"); // Optional: Priority
+   const [priority, setPriority] = useState(task?.priority || "Medium");
    const [error, setError] = useState("");
 
    // Track loading state during API requests

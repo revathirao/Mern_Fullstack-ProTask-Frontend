@@ -26,8 +26,6 @@ export interface ProjectFormProps {
    onProjectCreated: (newProject: any) => void; // allow passing new project
    // used when editing a project
    onProjectUpdated?: (project: any) => void;
-   // project data when editing
-   // project?: any;
    // flag to distinguish create vs edit
    editProject?: any;
 }
@@ -75,7 +73,7 @@ export interface TaskFormProps {
    onClose: () => void; // Callback to close the form/modal
 }
 
- export interface TaskListProps {
+export interface TaskListProps {
    projectId: string;
    filter?: {
       searchTerm?: string;

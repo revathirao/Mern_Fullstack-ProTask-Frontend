@@ -18,7 +18,7 @@ import {
  * - Manages loading & error state
  * * UI components should ONLY call these functions.
  * @param token - Auth token for protected API calls
- ** @returns Task state + CRUD handlers
+ **@returns Task state + CRUD handlers
  */
 export function useProjects(token: string) {
    // Holds all projects
@@ -42,9 +42,8 @@ export function useProjects(token: string) {
          setError(""); // Reset previous errors
 
          const data = await fetchProjects(token);
-         //  setProjects(data); //save projects to state
          // Ensure we store an array in state
-         setProjects(Array.isArray(data) ? data : data.projects || []);
+         setProjects(Array.isArray(data) ? data : data.projects || []); //save projects to state
       } catch (error: any) {
          setError(error.message || "Failed to load projects");
       } finally {

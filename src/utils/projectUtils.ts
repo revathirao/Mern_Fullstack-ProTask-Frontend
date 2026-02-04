@@ -2,9 +2,8 @@
  * Delete a project
  * @param projectId - ID of the project to delete
  * @param removeProject - Function from useProjects hook
- *  * @param editProjectHook - Function from useProjects hook
-
-  */
+ * @param editProjectHook - Function from useProjects hook
+ */
 export async function deleteProject(
    projectId: string,
    removeProject: (id: string) => Promise<void>,

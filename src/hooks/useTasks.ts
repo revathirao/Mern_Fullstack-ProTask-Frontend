@@ -43,8 +43,6 @@ export function useTasks(projectId: string, token: string) {
 
          const data = await fetchTasks(projectId, token);
          console.log("Fetched tasks:", data);
-         // setTasks(data); //save tasks to state
-         // setTasks(Array.isArray(data) ? data : []);
          setTasks(Array.isArray(data.tasks) ? data.tasks : data);
       } catch (error: any) {
          setError(error.message || "Failed to load tasks");
@@ -91,15 +89,7 @@ export function useTasks(projectId: string, token: string) {
             token,
          );
 
-         // Replace updated task in state
-         // setTasks((prev) =>
-         //    prev.map((task) => (task._id === taskId ? updatedTask : task)),
-         // setTasks((prevTasks) =>
-         //    prevTasks.map((task) =>
-         //       task.id === taskId ? { ...task, ...updatedTask } : task,
-         //    ),
-
-         // 2. Update state immediately
+         //  Update state immediately
          setTasks((prev) =>
             prev.map((task) =>
                // If IDs match, merge the old task, the new body, and the API response
@@ -108,7 +98,6 @@ export function useTasks(projectId: string, token: string) {
                   : task,
             ),
          );
-
          return updatedTask;
       } catch (error: any) {
          setError(error.message || "Failed to update tasks");

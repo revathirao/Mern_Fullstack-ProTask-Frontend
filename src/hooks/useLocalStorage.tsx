@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
  * A reusable hook to persist state in localStorage.
  * It automatically initializes the state from localStorage if available,
  * and saves any updates to localStorage whenever the state changes.
- * * @param key - The localStorage key to use
+ * @param key - The localStorage key to use
  * @param initialValue - The default value if nothing is in localStorage
  * @returns [value, setValue] - The stateful value and setter function
  */

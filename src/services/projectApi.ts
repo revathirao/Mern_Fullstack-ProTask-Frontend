@@ -65,7 +65,7 @@ export async function fetchProjectById(token: string, projectId: string) {
  * Create a new project for a specific project
  * @param  Body - Task payload (title, description, status, priority, etc.)
  * @param token - Auth token for protected route
- ** @returns Newly created project from backend
+ * @returns Newly created project from backend
  */
 export async function createProject(body: any, token: string) {
    try {

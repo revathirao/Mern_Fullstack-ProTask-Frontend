@@ -79,12 +79,7 @@ export async function createTask(projectId: string, body: any, token: string) {
  * @param token - Auth token
  **@returns Updated task
  */
-export async function updateTask(
-   projectId: string,
-   taskId: string,
-   body: any,
-   token: string,
-) {
+export async function updateTask(taskId: string, body: any, token: string) {
    try {
       if (!token) throw new Error("No auth token provided");
 
@@ -119,7 +114,6 @@ export async function deleteTask(
       if (!token) throw new Error("No auth token provided");
 
       const response = await axios.delete(
-         // `${BASE_URL}/tasks/${taskId}`,
          `${BASE_URL_TASK}/${taskId}`,
 
          {

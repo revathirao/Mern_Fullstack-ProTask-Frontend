@@ -77,13 +77,13 @@
 .status.active {
    background-color: #e0f7e9;
    color: #ffffff;
-   border-radius: 10px;
+   border-radius: 15px;
 }
 
 .status.completed {
    background-color: #e8eaf6;
    color: #ffffff;
-   border-radius: 10px;
+   border-radius: 15px;
 }
 
 /* Action buttons */
