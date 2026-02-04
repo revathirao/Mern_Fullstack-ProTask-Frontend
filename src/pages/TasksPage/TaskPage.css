@@ -1,0 +1,142 @@
+/* Container */
+.task-page-container {
+   max-width: 1000px;
+   margin: 20px auto;
+   padding: 20px;
+   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Stats on top - colorful */
+.task-stats {
+   display: flex;
+   gap: 15px;
+   margin-bottom: 20px;
+}
+
+.task-stats .stat {
+   flex: 1;
+   padding: 20px;
+   color: white;
+   font-weight: bold;
+   text-align: center;
+   border-radius: 8px;
+   font-size: 16px;
+}
+
+.task-stats .stat.total {
+   background: #6c5ce7;
+}
+.task-stats .stat.todo {
+   background: #fdcb6e;
+   color: #333;
+}
+.task-stats .stat.inprogress {
+   background: #00b894;
+}
+.task-stats .stat.done {
+   background: #e17055;
+}
+
+/* Search + Filters + Add Task */
+.task-controls-wrapper {
+   display: flex;
+   flex-wrap: wrap;
+   gap: 10px;
+   margin-bottom: 20px;
+   align-items: center;
+}
+
+.task-controls-wrapper input,
+.task-controls-wrapper select {
+   padding: 8px 12px;
+   border-radius: 5px;
+   border: 1px solid #ccc;
+}
+
+.task-controls-wrapper .add-task-btn {
+   padding: 8px 15px;
+   background-color: #0984e3;
+   color: white;
+   border: none;
+   border-radius: 5px;
+   cursor: pointer;
+}
+
+.task-controls-wrapper .add-task-btn:hover {
+   background-color: #74b9ff;
+}
+
+/* Task Table */
+.task-list {
+   border: 1px solid #ddd;
+   border-radius: 6px;
+   overflow: hidden;
+}
+
+/* Header */
+.task-list-header {
+   display: grid;
+   grid-template-columns: 2fr 3fr 1fr 1fr 1fr;
+   background: #f1f2f6;
+   font-weight: bold;
+   padding: 12px 15px;
+   border-bottom: 1px solid #ccc;
+}
+
+/* Rows */
+.task-item {
+   display: grid;
+   grid-template-columns: 2fr 3fr 1fr 1fr 1fr;
+   padding: 12px 15px;
+   border-bottom: 1px solid #eee;
+   align-items: center;
+}
+
+.task-item:nth-child(even) {
+   background: #fafafa;
+}
+
+/* Buttons inside table row */
+.task-item button {
+   padding: 5px 10px;
+   border-radius: 4px;
+   font-size: 13px;
+   border: none;
+   cursor: pointer;
+}
+
+.task-item button.edit-btn {
+   background: #0984e3;
+   color: white;
+}
+.task-item button.edit-btn:hover {
+   background: #74b9ff;
+}
+
+.task-item button.delete-btn {
+   background: #d63031;
+   color: white;
+}
+.task-item button.delete-btn:hover {
+   background: #ff7675;
+}
+
+/* Responsive */
+@media (max-width: 800px) {
+   .task-list-header,
+   .task-item {
+      grid-template-columns: 1fr 2fr 1fr 1fr 1fr;
+      font-size: 14px;
+   }
+
+   .task-controls-wrapper {
+      flex-direction: column;
+      align-items: stretch;
+   }
+
+   .task-controls-wrapper input,
+   .task-controls-wrapper select,
+   .task-controls-wrapper .add-task-btn {
+      width: 100%;
+   }
+}

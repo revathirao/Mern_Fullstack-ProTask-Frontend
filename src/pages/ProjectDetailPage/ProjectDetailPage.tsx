@@ -132,7 +132,7 @@ export default function ProjectDetails() {
          </div>
 
          {/* Edit Modal */}
-         {/* {showEditModal && (
+         {showEditModal && (
             <Modal onClose={() => setShowEditModal(false)}>
                <ProjectForm
                   editProject={project}
@@ -141,7 +141,7 @@ export default function ProjectDetails() {
                   onProjectUpdated={handleUpdate}
                />
             </Modal>
-         )} */}
+         )}
 
          {/* Task List */}
          {/* <div className="project-tasks-section">

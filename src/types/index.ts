@@ -74,3 +74,12 @@ export interface TaskFormProps {
    onTaskUpdated?: (task: any) => void; // Callback after updating an existing task
    onClose: () => void; // Callback to close the form/modal
 }
+
+ export interface TaskListProps {
+   projectId: string;
+   filter?: {
+      searchTerm?: string;
+      status?: "All" | "To Do" | "In Progress" | "Done";
+      priority?: "All" | "Low" | "Medium" | "High";
+   };
+}
