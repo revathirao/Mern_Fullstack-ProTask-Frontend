@@ -15,7 +15,7 @@ import {
    updateProject as updateProjectAction,
 } from "../../../utils/projectUtils"; // Util for deletion
 
-import "./projects.css";
+import "./Projects.css";
 
 /**
  * Projects Page Component
@@ -56,20 +56,21 @@ export default function Projects() {
       setShowForm(false); // close modal
    };
 
- /** 
- * Summary Statistics calculation
- * Note: These calculations depend on the 'status' field returned by the API.
- * The backend uses string values "Active" and "Completed".
- */
-//  Total Projects: The length of the entire projects array
-const totalProjects = projects.length;
+   /**
+    * Summary Statistics calculation
+    * Note: These calculations depend on the 'status' field returned by the API.
+    * The backend uses string values "Active" and "Completed".
+    */
+   //  Total Projects: The length of the entire projects array
+   const totalProjects = projects.length;
 
-//  Active Projects: Filter projects where status matches exactly "Active"
-const activeProjects = projects.filter((p) => p.status === "Active").length;
+   //  Active Projects: Filter projects where status matches exactly "Active"
+   const activeProjects = projects.filter((p) => p.status === "Active").length;
 
-// Completed Projects: Filter projects where status matches exactly "Completed"
-const completedProjects = projects.filter((p) => p.status === "Completed").length;
-
+   // Completed Projects: Filter projects where status matches exactly "Completed"
+   const completedProjects = projects.filter(
+      (p) => p.status === "Completed",
+   ).length;
 
    / * Load projects when component mounts or token changes*/;
    useEffect(() => {
