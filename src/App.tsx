@@ -1,9 +1,8 @@
-// import { useState } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
-import Login from "../src/pages/LoginPage/LoginPage";
-import Register from "../src/pages/RegisterPage/RegisterPage";
-import Dashboard from "../src/pages/DashboardPage/DashboardPage";
-import ProtectedRoutes from "../src/routes/ProtectedRoutes";
+import Login from "./pages/LoginPage/LoginPage";
+import Register from "./pages/RegisterPage/RegisterPage";
+import Dashboard from "./pages/DashboardPage/DashboardPage";
+import ProtectedRoutes from "./routes/ProtectedRoutes";
 import Projects from "./components/Projects/Projects/Projects.tsx";
 import Header from "./components/SharedComponents/Header/Header";
 import { AuthContext } from "./context/authContext.tsx";
@@ -30,7 +29,7 @@ function App() {
 
    return (
       <>
-         {/* Header is outside Routes - visible on all pages */}
+         {/* Header is outside Routes  visible on all pages */}
          {/* Show header only if user is logged in */}
          {user && !noHeaderRoutes.includes(location.pathname) && (
             <Header />
