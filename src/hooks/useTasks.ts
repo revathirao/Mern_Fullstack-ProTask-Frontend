@@ -82,12 +82,7 @@ export function useTasks(projectId: string, token: string) {
       try {
          setLoading(true); // Start loading
          setError(""); // Reset previous errors
-         const updatedTask = await updateTask(
-            projectId,
-            taskId,
-            taskBody,
-            token,
-         );
+         const updatedTask = await updateTask(taskId, taskBody, token);
 
          //  Update state immediately
          setTasks((prev) =>

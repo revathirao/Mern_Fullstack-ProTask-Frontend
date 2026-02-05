@@ -41,7 +41,7 @@ body,
 }
 
 /* Go to Projects button */
-.dashboard .projects-btn {
+.dashboard projects-btn{
    padding: 14px 32px;
    font-size: 1rem;
    font-weight: 600;
