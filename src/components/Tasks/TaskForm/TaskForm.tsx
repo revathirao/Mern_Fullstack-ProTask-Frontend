@@ -112,12 +112,14 @@ export default function TaskForm({
             {error && <ErrorMessage message={error} />}
 
             {/* Form Acion Buttons */}
-
             <div className="task-form-buttons">
-               <button type="submit" disabled={isSubmitting}>
+               <button
+                  type="submit"
+                  className="primary-btn"
+                  disabled={isSubmitting}>
                   {task ? "Update Task" : "Create Task"}
                </button>
-               <button type="button" onClick={onClose}>
+               <button type="button" className="secodary-btn" onClick={onClose}>
                   Cancel
                </button>
             </div>

@@ -104,10 +104,10 @@
    background: #b91c1c;
 }
 
-.back-btn {
+.back-botton {
    background: #f59e0b;
 }
-.back-btn:hover {
+.back-botton:hover {
    background: #b45309;
 }
 
@@ -115,7 +115,7 @@
    background: #16a34a;
 }
 .tasks-btn:hover {
-   background: #b45309;
+   background: #b45309 !important;
 }
 
 /* Error messages */

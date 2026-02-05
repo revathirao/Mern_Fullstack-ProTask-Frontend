@@ -1,16 +1,16 @@
-
 /* Container for the entire task list */
 .task-list {
    display: flex;
    flex-direction: column;
    gap: 1rem;
    font-family: sans-serif;
+   box-sizing: border-box;
 }
 
 /* Table/grid header row */
 .task-list-header {
    display: grid;
-   grid-template-columns: 2fr 3fr 1fr 1fr 1fr; /* Columns: Title, Desc, Status, Priority, Actions */
+   grid-template-columns: 2.5fr 4fr 1fr 1fr 1fr; /* same for both */
    padding: 0.5rem 1rem;
    font-weight: bold;
    border-bottom: 2px solid #ccc;
@@ -27,8 +27,7 @@
 /* Each task row */
 .task-item-row {
    display: grid;
-   /* grid-template-columns: 2fr 3fr 1fr 1fr 1fr; */
-   grid-template-columns: 2.5fr 4fr 1fr 1fr 1fr;
+   grid-template-columns: 2.5fr 4fr 1fr 1fr 1fr; /* same for both */
    padding: 0.5rem 1rem;
    align-items: center;
    border-bottom: 1px solid #eee;
@@ -53,7 +52,7 @@
 .status-badge,
 .priority-badge {
    display: inline-block;
-   padding: 0.2rem 0.5rem;
+   /* padding: 0.2rem 0.5rem; */
    border-radius: 4px;
    font-size: 0.85rem;
    font-weight: 500;
@@ -128,4 +127,32 @@
    border-radius: 4px;
    cursor: pointer;
    width: fit-content;
+}
+
+@media (max-width: 768px) {
+   /* Stack header and rows vertically */
+   .task-list-header {
+      display: none; /* Hide the headers on mobile */
+   }
+
+   .task-item-row {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      padding: 1rem;
+      border: 1px solid #eee;
+      border-radius: 8px;
+      margin-bottom: 0.5rem;
+   }
+
+   .task-item-column {
+      padding: 0;
+      width: 100%;
+   }
+
+   .task-actions {
+      display: flex;
+      justify-content: flex-start;
+      margin-top: 0.5rem;
+   }
 }

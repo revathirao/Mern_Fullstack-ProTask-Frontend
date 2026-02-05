@@ -1,5 +1,6 @@
 import type { TaskItemProps } from "../../../types";
 import "./TaskItem.css";
+
 /**
  * TaskItem Component
  * - Represents a single task row in the TaskList
@@ -10,9 +11,6 @@ import "./TaskItem.css";
  * @returns JSX.Element - single task row
  */
 export default function TaskItem({ task, onEdit, onDelete }: TaskItemProps) {
-   console.log("TaskItem task:", task);
-   console.log(task);
-
    return (
       <div className="task-item-row">
          {/* Column 1: Task Title */}

@@ -12,7 +12,9 @@ export default function TasksPage() {
    const { projectId } = useParams<{ projectId: string }>();
    const { token } = useContext(AuthContext);
 
-   if (!projectId || !token) return null;
+   if (!projectId || !token) {
+      return <p>Unauthorized</p>;
+   }
 
    const { tasks, loading, addTask, editTask, removeTask, loadTasks } =
       useTasks(projectId, token);
@@ -27,6 +29,7 @@ export default function TasksPage() {
       "All" | "Low" | "Medium" | "High"
    >("All");
 
+   //it helps to load all the tasks from backend
    useEffect(() => {
       loadTasks();
    }, [projectId]);
@@ -56,7 +59,7 @@ export default function TasksPage() {
 
    return (
       <div className="task-page-container">
-         <h2>Project Tasks</h2>
+         <h2 className="task-header">My Tasks</h2>
          <Link to={`/projects/${projectId}`} className="back-btn">
             ← Back to Project
          </Link>

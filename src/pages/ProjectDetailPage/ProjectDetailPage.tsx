@@ -24,8 +24,9 @@ export default function ProjectDetails() {
    const navigate = useNavigate();
    const { token } = useContext(AuthContext);
 
+   if (!token) return <Spinner />;
    const { projects, loading, loadProjectId, editProject, removeProject } =
-      useProjects(token || "");
+      useProjects(token);
 
    const [project, setProject] = useState<any>(null);
    const [showEditModal, setShowEditModal] = useState(false);
@@ -124,7 +125,9 @@ export default function ProjectDetails() {
                View Tasks
             </button>
 
-            <button className="back-btn" onClick={() => navigate("/projects")}>
+            <button
+               className="back-botton"
+               onClick={() => navigate("/projects")}>
                Back
             </button>
          </div>

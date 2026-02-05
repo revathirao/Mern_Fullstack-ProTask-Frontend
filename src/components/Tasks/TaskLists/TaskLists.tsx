@@ -1,11 +1,5 @@
 import TaskItem from "../TaskItem/TaskItem";
-import type { Task } from "../../../types";
-
-interface TaskListProps {
-   tasks: Task[];
-   onEdit: (task: Task) => void;
-   onDelete: (taskId: string) => void;
-}
+import type { TaskListProps } from "../../../types";
 
 export default function TaskList({ tasks, onEdit, onDelete }: TaskListProps) {
    if (tasks.length === 0) {

@@ -74,10 +74,7 @@ export interface TaskFormProps {
 }
 
 export interface TaskListProps {
-   projectId: string;
-   filter?: {
-      searchTerm?: string;
-      status?: "All" | "To Do" | "In Progress" | "Done";
-      priority?: "All" | "Low" | "Medium" | "High";
-   };
+   tasks: Task[];
+   onEdit: (task: Task) => void;
+   onDelete: (taskId: string) => void;
 }
