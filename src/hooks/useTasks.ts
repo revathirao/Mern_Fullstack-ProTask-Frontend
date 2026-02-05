@@ -63,7 +63,8 @@ export function useTasks(projectId: string, token: string) {
          const newTask = await createTask(projectId, taskBody, token);
 
          // Add new task to existing list
-         setTasks((prev) => [...prev, newTask]);
+         // setTasks((prev) => [...prev, newTask]);
+         setTasks((prev) => [...prev, { ...taskBody, ...newTask }]);
          return newTask;
       } catch (error: any) {
          setError(error.message || "Failed to add tasks");

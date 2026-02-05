@@ -5,7 +5,6 @@ body,
    width: 100%;
    margin: 0;
    padding: 0;
-   /* overflow: hidden; Prevent horizontal scrolling */
    font-family: Arial, sans-serif;
 }
 
@@ -33,27 +32,26 @@ body,
 }
 
 /* Go to register button */
-.homepage .register-btn {
-   padding: 14px 32px;
-   font-size: 1rem;
+.homepage-container .register-btn {
+   margin-top: 1rem;
+   padding: 1rem 2rem;
+   font-size: 1.2rem;
    font-weight: 600;
-   border: none;
-   border-radius: 30px;
-   cursor: pointer;
-   background: #2563eb;
    color: white;
-   padding: 19px;
+   border: none;
+   border-radius: 10px;
+   cursor: pointer;
+   background-color: rgba(0, 123, 255, 0.8);
    transition: all 0.3s ease;
 }
 
 /* Hover effect */
-.homepage .register-btn:hover {
+.homepage-container .register-btn:hover {
    background: #1d4ed8;
-   transform: translateY(-2px);
 }
 
 /* login button */
-.homepage-login button {
+.homepage-container .login-btn {
    padding: 1rem 2rem;
    background-color: rgba(0, 123, 255, 0.8);
    color: white;
@@ -65,7 +63,7 @@ body,
    transition: all 0.3s ease;
 }
 
-.homepage-login button:hover {
+.homepage-container .login-btn:hover {
    background-color: rgba(0, 86, 179, 0.9);
 }
 
@@ -73,4 +71,16 @@ body,
    display: flex;
    gap: 1rem;
    margin-top: 2rem;
+}
+
+/* Update your existing button classes with these additions */
+.homepage-container .register-btn,
+.homepage-container .login-btn {
+   /* ... existing styles like padding, color, etc. ... */
+   transition: all 0.3s ease;
+
+   /* Fix the rendering glitch: */
+   backface-visibility: hidden; /* Prevents flicker on hover */
+   will-change: transform; /* Hints browser to optimize the transition */
+   transform: translateZ(0); /* Forces GPU rendering to fix artifacts */
 }

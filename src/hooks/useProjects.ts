@@ -84,7 +84,7 @@ export function useProjects(token: string) {
          const newProject = await createProject(projectBody, token);
 
          // Add new project to existing list
-         setProjects((prev) => [...prev, newProject]);
+         setProjects((prev) => [...prev, { ...projectBody, ...newProject }]);
          return newProject;
       } catch (error: any) {
          setError(error.message || "Failed to add project");
@@ -112,7 +112,9 @@ export function useProjects(token: string) {
          // Replace updated project in state
          setProjects((prev) =>
             prev.map((proj) =>
-               proj._id === projectId ? updatedProject : proj,
+               proj._id === projectId
+                  ? { ...proj, ...projectBody, ...updatedProject }
+                  : proj,
             ),
          );
 
